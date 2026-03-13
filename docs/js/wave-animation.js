@@ -27,12 +27,12 @@
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
 
-  // Wave configuration
+  // Wave configuration (slow, gentle motion)
   var waves = [
-    { amplitude: 0.12, frequency: 1.2, speed: 0.015, phase: 0, yOffset: 0.55 },
-    { amplitude: 0.08, frequency: 2.0, speed: 0.020, phase: 2.0, yOffset: 0.50 },
-    { amplitude: 0.06, frequency: 3.2, speed: 0.012, phase: 4.0, yOffset: 0.60 },
-    { amplitude: 0.04, frequency: 4.5, speed: 0.025, phase: 1.0, yOffset: 0.45 }
+    { amplitude: 0.12, frequency: 0.8,  speed: 0.004, phase: 0,   yOffset: 0.55 },
+    { amplitude: 0.08, frequency: 1.2,  speed: 0.005, phase: 2.0, yOffset: 0.50 },
+    { amplitude: 0.06, frequency: 1.8,  speed: 0.003, phase: 4.0, yOffset: 0.60 },
+    { amplitude: 0.04, frequency: 2.4,  speed: 0.006, phase: 1.0, yOffset: 0.45 }
   ];
 
   function getColors() {
@@ -62,7 +62,7 @@
       var nx = x / width;
       // Chirp-like effect: frequency increases along x
       var freq = w.frequency * (1 + nx * 0.5);
-      var y = y0 + Math.sin(nx * freq * Math.PI * 2 + w.phase + time * w.speed * 60) * height * w.amplitude;
+      var y = y0 + Math.sin(nx * freq * Math.PI * 2 + w.phase + time * w.speed * 16) * height * w.amplitude;
       ctx.lineTo(x, y);
     }
 
