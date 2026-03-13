@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="zh" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PySPT — Python Signal Processing Toolbox</title>
+  <meta name="description" content="PySPT: 面向教学与科研的 Python 信号处理工具箱。A teaching-oriented signal processing library modeled after MATLAB.">
+  <meta property="og:title" content="PySPT — Python Signal Processing Toolbox">
+  <meta property="og:description" content="面向教学与科研的 Python 信号处理工具箱，参考 MATLAB Signal Processing Toolbox 设计。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://zebedee2021.github.io/pyspt-v2/">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ============ Navigation ============ -->
+<nav class="navbar" id="navbar">
+  <div class="container">
+    <a href="#" class="nav-logo">PySPT</a>
+    <button class="hamburger" id="hamburger" aria-label="Menu">&#9776;</button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#features"><span data-lang="zh">特性</span><span data-lang="en">Features</span></a></li>
+      <li><a href="#quickstart"><span data-lang="zh">快速上手</span><span data-lang="en">Quick Start</span></a></li>
+      <li><a href="#modules"><span data-lang="zh">模块</span><span data-lang="en">Modules</span></a></li>
+      <li><a href="#compatibility"><span data-lang="zh">兼容性</span><span data-lang="en">Compatibility</span></a></li>
+      <li><a href="#roadmap"><span data-lang="zh">路线图</span><span data-lang="en">Roadmap</span></a></li>
+      <li><a href="#citation"><span data-lang="zh">引用</span><span data-lang="en">Citation</span></a></li>
+      <li><a href="https://github.com/Zebedee2021/pyspt-v2" target="_blank" rel="noopener">GitHub &nearr;</a></li>
+    </ul>
+    <div class="nav-controls">
+      <button class="btn-icon" id="lang-toggle" title="Switch Language">EN</button>
+      <button class="btn-icon" id="theme-toggle" title="Toggle Theme">&#9790;</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ Hero ============ -->
+<section class="hero" id="hero">
+  <canvas class="hero-canvas" id="hero-canvas"></canvas>
+  <div class="hero-content">
+    <h1 class="hero-title">PySPT</h1>
+    <p class="hero-subtitle">Python Signal Processing Toolbox</p>
+    <p class="hero-desc">
+      <span data-lang="zh">面向教学与科研的 Python 信号处理工具箱，参考 MATLAB Signal Processing Toolbox 体系架构设计，提供与 MATLAB 函数对应的 Python 实现。</span>
+      <span data-lang="en">A teaching-oriented signal processing library for Python, modeled after MATLAB's Signal Processing Toolbox. Provides Python implementations that correspond to MATLAB functions.</span>
+    </p>
+    <div class="hero-badges">
+      <span class="badge">Python 3.9+</span>
+      <span class="badge">MIT License</span>
+      <span class="badge">NumPy</span>
+      <span class="badge">SciPy</span>
+      <span class="badge">v2.0.0-dev</span>
+    </div>
+    <div class="hero-actions">
+      <button class="btn btn-install" onclick="copyInstall(this)">
+        <span>pip install pyspt</span>
+        <span class="copy-hint" data-lang="zh">点击复制</span>
+        <span class="copy-hint" data-lang="en">click to copy</span>
+      </button>
+      <a href="https://github.com/Zebedee2021/pyspt-v2" class="btn btn-primary" target="_blank" rel="noopener">GitHub</a>
+      <a href="#quickstart" class="btn btn-outline">
+        <span data-lang="zh">快速上手</span>
+        <span data-lang="en">Quick Start</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Features ============ -->
+<section class="section" id="features">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">
+        <span data-lang="zh">核心特性</span>
+        <span data-lang="en">Features</span>
+      </h2>
+      <p class="section-desc">
+        <span data-lang="zh">专为信号处理教学与科研打造</span>
+        <span data-lang="en">Designed for signal processing education and research</span>
+      </p>
+    </div>
+    <div class="features-grid">
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 17l6-6 4 4 6-8"/><rect x="2" y="2" width="20" height="20" rx="3"/></svg>
+        </div>
+        <h3><span data-lang="zh">MATLAB 命名对齐</span><span data-lang="en">MATLAB Naming</span></h3>
+        <p><span data-lang="zh">函数名、参数名与 MATLAB Signal Processing Toolbox 保持一致，零迁移成本。</span><span data-lang="en">Function and parameter names aligned with MATLAB Signal Processing Toolbox for zero migration cost.</span></p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7z"/></svg>
+        </div>
+        <h3><span data-lang="zh">双语文档</span><span data-lang="en">Bilingual Docs</span></h3>
+        <p><span data-lang="zh">所有 API 提供中英文 docstring，适配中文教学环境。</span><span data-lang="en">All APIs have bilingual (Chinese/English) docstrings, perfect for Chinese teaching environments.</span></p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 18l6-6-6-6"/><path d="M8 6l-6 6 6 6"/><line x1="14" y1="4" x2="10" y2="20"/></svg>
+        </div>
+        <h3><span data-lang="zh">类型注解完整</span><span data-lang="en">Fully Typed</span></h3>
+        <p><span data-lang="zh">全部公开 API 附带 Python type hints，IDE 智能补全，调试更高效。</span><span data-lang="en">All public APIs include Python type hints for excellent IDE support and easier debugging.</span></p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4m0 12v4m-10-10h4m12 0h4m-2.93-7.07l-2.83 2.83m-8.48 8.48l-2.83 2.83m0-14.14l2.83 2.83m8.48 8.48l2.83 2.83"/></svg>
+        </div>
+        <h3><span data-lang="zh">轻量依赖</span><span data-lang="en">Lightweight</span></h3>
+        <p><span data-lang="zh">仅依赖 NumPy、SciPy、Matplotlib 三个核心科学计算库。</span><span data-lang="en">Only depends on NumPy, SciPy, and Matplotlib -- three core scientific libraries.</span></p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ Quick Start ============ -->
+<section class="section" id="quickstart" style="background: var(--c-code-bg);">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">
+        <span data-lang="zh">快速上手</span>
+        <span data-lang="en">Quick Start</span>
+      </h2>
+    </div>
+    <div class="quickstart-grid">
+
+      <!-- Install -->
+      <div>
+        <h3 style="font-size:1.1rem; margin-bottom:16px;">
+          <span data-lang="zh">安装</span><span data-lang="en">Installation</span>
+        </h3>
+        <div class="code-block">
+          <div class="code-block-header">
+            <span>Terminal</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre><code><span class="cm"># Clone and install in dev mode</span>
+git clone https://github.com/Zebedee2021/pyspt-v2.git
+cd pyspt-v2
+pip install -e <span class="st">".[dev]"</span>
+
+<span class="cm"># Or minimal install</span>
+pip install -e .</code></pre>
+        </div>
+        <div style="margin-top:16px;">
+          <h4 style="font-size:0.9rem; margin-bottom:8px; color:var(--c-text-secondary);">
+            <span data-lang="zh">可选依赖组</span><span data-lang="en">Optional Extras</span>
+          </h4>
+          <div class="code-block">
+            <pre><code>pip install -e <span class="st">".[docs]"</span>       <span class="cm"># Sphinx docs</span>
+pip install -e <span class="st">".[full]"</span>       <span class="cm"># ruptures, pandas</span>
+pip install -e <span class="st">".[tutorials]"</span>  <span class="cm"># JupyterLab</span></code></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Example -->
+      <div>
+        <h3 style="font-size:1.1rem; margin-bottom:16px;">
+          <span data-lang="zh">示例代码</span><span data-lang="en">Example</span>
+        </h3>
+        <div class="code-block">
+          <div class="code-block-header">
+            <span>Python</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+<span class="kw">from</span> pyspt.waveforms <span class="kw">import</span> square, chirp, gauspuls
+
+<span class="cm"># Generate time axis</span>
+t = np.<span class="fn">linspace</span>(<span class="nu">0</span>, <span class="nu">1</span>, <span class="nu">1000</span>)
+
+<span class="cm"># Square wave (30% duty cycle)</span>
+y_sq = <span class="fn">square</span>(<span class="nu">2</span> * np.pi * <span class="nu">5</span> * t, duty=<span class="nu">30</span>)
+
+<span class="cm"># Linear chirp (1 Hz -> 50 Hz)</span>
+y_chirp = <span class="fn">chirp</span>(t, f0=<span class="nu">1</span>, t1=<span class="nu">1</span>, f1=<span class="nu">50</span>)
+
+<span class="cm"># Gaussian pulse (fc=100 Hz)</span>
+t2 = np.<span class="fn">linspace</span>(-<span class="nu">0.5</span>, <span class="nu">0.5</span>, <span class="nu">1000</span>)
+y_gp = <span class="fn">gauspuls</span>(t2, fc=<span class="nu">100</span>, bw=<span class="nu">0.5</span>)
+
+<span class="cm"># Plot</span>
+fig, axes = plt.<span class="fn">subplots</span>(<span class="nu">3</span>, <span class="nu">1</span>, figsize=(<span class="nu">10</span>, <span class="nu">6</span>))
+axes[<span class="nu">0</span>].<span class="fn">plot</span>(t, y_sq)
+axes[<span class="nu">1</span>].<span class="fn">plot</span>(t, y_chirp)
+axes[<span class="nu">2</span>].<span class="fn">plot</span>(t2, y_gp)
+plt.<span class="fn">tight_layout</span>()
+plt.<span class="fn">show</span>()</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Modules ============ -->
+<section class="section" id="modules">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">
+        <span data-lang="zh">模块总览</span>
+        <span data-lang="en">Module Overview</span>
+      </h2>
+      <p class="section-desc">
+        <span data-lang="zh">9 个子模块覆盖信号处理全流程</span>
+        <span data-lang="en">9 submodules covering the full signal processing workflow</span>
+      </p>
+    </div>
+    <div class="modules-grid">
+
+      <div class="module-card done">
+        <div class="module-card-header">
+          <span class="module-name">waveforms</span>
+          <span class="status-badge done">
+            <span data-lang="zh">已完成</span><span data-lang="en">Done</span>
+          </span>
+        </div>
+        <p class="module-desc"><span data-lang="zh">波形生成 -- 周期波、脉冲、调制信号</span><span data-lang="en">Waveform generation -- periodic, pulses, modulated</span></p>
+        <div class="module-funcs">
+          <span class="func-tag">square</span>
+          <span class="func-tag">sawtooth</span>
+          <span class="func-tag">diric</span>
+          <span class="func-tag">gauspuls</span>
+          <span class="func-tag">gmonopuls</span>
+          <span class="func-tag">rectpuls</span>
+          <span class="func-tag">tripuls</span>
+          <span class="func-tag">pulstran</span>
+          <span class="func-tag">chirp</span>
+          <span class="func-tag">sinc</span>
+        </div>
+      </div>
+
+      <div class="module-card wip">
+        <div class="module-card-header">
+          <span class="module-name">preprocessing</span>
+          <span class="status-badge wip">
+            <span data-lang="zh">开发中</span><span data-lang="en">WIP</span>
+          </span>
+        </div>
+        <p class="module-desc"><span data-lang="zh">信号预处理 -- 去趋势、归一化、重采样</span><span data-lang="en">Preprocessing -- detrend, normalize, resample</span></p>
+      </div>
+
+      <div class="module-card wip">
+        <div class="module-card-header">
+          <span class="module-name">measurements</span>
+          <span class="status-badge wip">
+            <span data-lang="zh">开发中</span><span data-lang="en">WIP</span>
+          </span>
+        </div>
+        <p class="module-desc"><span data-lang="zh">测量与特征提取 -- 峰值检测、SNR、THD</span><span data-lang="en">Measurements -- peak detection, SNR, THD</span></p>
+      </div>
+
+      <div class="module-card wip">
+        <div class="module-card-header">
+          <span class="module-name">transforms</span>
+          <span class="status-badge wip">
+            <span data-lang="zh">开发中</span><span data-lang="en">WIP</span>
+          </span>
+        </div>
+        <p class="module-desc"><span data-lang="zh">信号变换 -- FFT、DCT、Hilbert、CZT</span><span data-lang="en">Transforms -- FFT, DCT, Hilbert, CZT</span></p>
+      </div>
+
+      <div class="module-card wip">
+        <div class="module-card-header">
+          <span class="module-name">correlation</span>
+          <span class="status-badge wip">
+            <span data-lang="zh">开发中</span><span data-lang="en">WIP</span>
+          </span>
+        </div>
+        <p class="module-desc"><span data-lang="zh">相关与卷积 -- xcorr, conv, aligned</span><span data-lang="en">Correlation & convolution -- xcorr, conv, aligned</span></p>
+      </div>
+
+      <div class="module-card wip">
+        <div class="module-card-header">
+          <span class="module-name">filtering</span>
+          <span class="status-badge wip">
+            <span data-lang="zh">开发中</span><span data-lang="en">WIP</span>
+          </span>
+        </div>
+        <p class="module-desc"><span data-lang="zh">数字/模拟滤波器 -- butter, cheby1, filtfilt</span><span data-lang="en">Filters -- butter, cheby1, filtfilt</span></p>
+      </div>
+
+      <div class="module-card wip">
+        <div class="module-card-header">
+          <span class="module-name">spectral</span>
+          <span class="status-badge wip">
+            <span data-lang="zh">开发中</span><span data-lang="en">WIP</span>
+          </span>
+        </div>
+        <p class="module-desc"><span data-lang="zh">频谱分析 -- periodogram, spectrogram, pwelch</span><span data-lang="en">Spectral -- periodogram, spectrogram, pwelch</span></p>
+      </div>
+
+      <div class="module-card wip">
+        <div class="module-card-header">
+          <span class="module-name">io</span>
+          <span class="status-badge wip">
+            <span data-lang="zh">开发中</span><span data-lang="en">WIP</span>
+          </span>
+        </div>
+        <p class="module-desc"><span data-lang="zh">数据读写 -- WAV, CSV, MAT 文件</span><span data-lang="en">I/O -- WAV, CSV, MAT file support</span></p>
+      </div>
+
+      <div class="module-card wip">
+        <div class="module-card-header">
+          <span class="module-name">plotting</span>
+          <span class="status-badge wip">
+            <span data-lang="zh">开发中</span><span data-lang="en">WIP</span>
+          </span>
+        </div>
+        <p class="module-desc"><span data-lang="zh">可视化辅助 -- 频谱图、信号对比绘图</span><span data-lang="en">Visualization -- spectrum plots, signal comparison</span></p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ Compatibility ============ -->
+<section class="section" id="compatibility" style="background: var(--c-code-bg);">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">
+        <span data-lang="zh">MATLAB 兼容性</span>
+        <span data-lang="en">MATLAB Compatibility</span>
+      </h2>
+      <p class="section-desc">
+        <span data-lang="zh">对齐 MATLAB 调用习惯，同时遵循 Python 惯例</span>
+        <span data-lang="en">Aligned with MATLAB conventions while following Python idioms</span>
+      </p>
+    </div>
+
+    <div class="compat-table-wrap">
+      <table class="compat-table">
+        <thead>
+          <tr>
+            <th><span data-lang="zh">差异项</span><span data-lang="en">Item</span></th>
+            <th>MATLAB</th>
+            <th>PySPT</th>
+            <th><span data-lang="zh">说明</span><span data-lang="en">Note</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span data-lang="zh">占空比</span><span data-lang="en">Duty cycle</span></td>
+            <td><code>duty</code> 0~1</td>
+            <td><code>duty</code> 0~100</td>
+            <td><span data-lang="zh">百分比更直观，与 MATLAB square 行为一致</span><span data-lang="en">Percentage, consistent with MATLAB square</span></td>
+          </tr>
+          <tr>
+            <td>sinc</td>
+            <td><code>sin(pi*x)/(pi*x)</code></td>
+            <td><code>sin(pi*x)/(pi*x)</code></td>
+            <td><span data-lang="zh">归一化 sinc（与 NumPy 一致）</span><span data-lang="en">Normalized sinc (same as NumPy)</span></td>
+          </tr>
+          <tr>
+            <td><span data-lang="zh">索引</span><span data-lang="en">Indexing</span></td>
+            <td>1-based</td>
+            <td>0-based</td>
+            <td><span data-lang="zh">Python 标准</span><span data-lang="en">Python standard</span></td>
+          </tr>
+          <tr>
+            <td><span data-lang="zh">返回类型</span><span data-lang="en">Return type</span></td>
+            <td>MATLAB matrix</td>
+            <td><code>numpy.ndarray</code></td>
+            <td><span data-lang="zh">Python 标准</span><span data-lang="en">Python standard</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="code-compare">
+      <div class="code-block">
+        <div class="code-block-header">
+          <span>MATLAB</span>
+        </div>
+        <pre><code><span class="cm">% Generate chirp signal</span>
+t = <span class="nu">0</span>:<span class="nu">0.001</span>:<span class="nu">1</span>;
+y = <span class="fn">chirp</span>(t, <span class="nu">1</span>, <span class="nu">1</span>, <span class="nu">50</span>);
+<span class="fn">plot</span>(t, y);
+<span class="fn">title</span>(<span class="st">'Chirp Signal'</span>);</code></pre>
+      </div>
+      <div class="code-block">
+        <div class="code-block-header">
+          <span>PySPT (Python)</span>
+        </div>
+        <pre><code><span class="cm"># Generate chirp signal</span>
+t = np.<span class="fn">arange</span>(<span class="nu">0</span>, <span class="nu">1</span>, <span class="nu">0.001</span>)
+y = <span class="fn">chirp</span>(t, <span class="nu">1</span>, <span class="nu">1</span>, <span class="nu">50</span>)
+plt.<span class="fn">plot</span>(t, y)
+plt.<span class="fn">title</span>(<span class="st">'Chirp Signal'</span>)</code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Roadmap ============ -->
+<section class="section" id="roadmap">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">
+        <span data-lang="zh">开发路线</span>
+        <span data-lang="en">Roadmap</span>
+      </h2>
+    </div>
+    <div class="timeline">
+
+      <div class="timeline-item done">
+        <div class="timeline-dot"></div>
+        <div class="timeline-title">Phase 0 &mdash;
+          <span data-lang="zh">项目脚手架</span><span data-lang="en">Project Scaffold</span>
+        </div>
+        <div class="timeline-desc">pyproject.toml, src layout, CI</div>
+      </div>
+
+      <div class="timeline-item done">
+        <div class="timeline-dot"></div>
+        <div class="timeline-title">Phase 1 &mdash;
+          <span data-lang="zh">波形生成</span><span data-lang="en">Waveforms</span>
+        </div>
+        <div class="timeline-desc">
+          <span data-lang="zh">10 个函数，41 项测试</span>
+          <span data-lang="en">10 functions, 41 tests</span>
+        </div>
+      </div>
+
+      <div class="timeline-item current">
+        <div class="timeline-dot"></div>
+        <div class="timeline-title">Phase 2 &mdash;
+          <span data-lang="zh">预处理 + 测量</span><span data-lang="en">Preprocessing + Measurements</span>
+        </div>
+        <div class="timeline-desc">preprocessing, measurements</div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-title">Phase 3 &mdash;
+          <span data-lang="zh">变换 + 相关</span><span data-lang="en">Transforms + Correlation</span>
+        </div>
+        <div class="timeline-desc">transforms, correlation</div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-title">Phase 4 &mdash;
+          <span data-lang="zh">滤波器</span><span data-lang="en">Filtering</span>
+        </div>
+        <div class="timeline-desc">filtering</div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-title">Phase 5 &mdash;
+          <span data-lang="zh">频谱分析</span><span data-lang="en">Spectral Analysis</span>
+        </div>
+        <div class="timeline-desc">spectral</div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-title">Phase 6 &mdash;
+          <span data-lang="zh">IO + 可视化</span><span data-lang="en">IO + Plotting</span>
+        </div>
+        <div class="timeline-desc">io, plotting</div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-title">Phase 7 &mdash;
+          <span data-lang="zh">文档站点</span><span data-lang="en">Documentation</span>
+        </div>
+        <div class="timeline-desc">Sphinx + ReadTheDocs + tutorials</div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-title">Phase 8 &mdash;
+          <span data-lang="zh">PyPI 发布</span><span data-lang="en">PyPI Release</span>
+        </div>
+        <div class="timeline-desc">
+          <span data-lang="zh">质量保证 + 正式发布</span>
+          <span data-lang="en">Quality assurance + official release</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ Citation ============ -->
+<section class="section" id="citation" style="background: var(--c-code-bg);">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">
+        <span data-lang="zh">引用</span>
+        <span data-lang="en">Citation</span>
+      </h2>
+      <p class="section-desc">
+        <span data-lang="zh">如果 PySPT 对你的教学或研究有帮助，欢迎引用</span>
+        <span data-lang="en">If PySPT helps your teaching or research, please cite</span>
+      </p>
+    </div>
+    <div class="citation-card">
+      <div class="code-block">
+        <div class="code-block-header">
+          <span>BibTeX</span>
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre><code>@software{pyspt2024,
+  author    = {Zhiguo Zhou},
+  title     = {PySPT: Python Signal Processing Toolbox},
+  year      = {2024},
+  publisher = {GitHub},
+  url       = {https://github.com/Zebedee2021/pyspt-v2}
+}</code></pre>
+      </div>
+      <div class="citation-info">
+        <span data-lang="zh">Zhiguo Zhou / 周治国 &middot; 北京理工大学 (Beijing Institute of Technology)</span>
+        <span data-lang="en">Zhiguo Zhou &middot; Beijing Institute of Technology</span>
+        <br>
+        <span data-lang="zh">本项目是 <a href="https://github.com/spaitlab/pyspt">spaitlab/pyspt</a> 的 v2 重构版本</span>
+        <span data-lang="en">This project is the v2 rewrite of <a href="https://github.com/spaitlab/pyspt">spaitlab/pyspt</a></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Footer ============ -->
+<footer class="footer">
+  <div class="container">
+    <ul class="footer-links">
+      <li><a href="https://github.com/Zebedee2021/pyspt-v2" target="_blank" rel="noopener">GitHub</a></li>
+      <li><a href="https://github.com/spaitlab/pyspt" target="_blank" rel="noopener">spaitlab/pyspt (v1)</a></li>
+      <li><a href="https://github.com/Zebedee2021/pyspt-v2/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a></li>
+    </ul>
+    <p>Copyright &copy; 2022&ndash;2026 Zhiguo Zhou, Beijing Institute of Technology</p>
+  </div>
+</footer>
+
+<script src="js/wave-animation.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
