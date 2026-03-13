@@ -54,16 +54,16 @@
       <span class="badge">v2.0.0-dev</span>
     </div>
     <div class="hero-actions">
+      <a href="https://colab.research.google.com/github/Zebedee2021/pyspt-v2/blob/main/tutorials/ch02_generation/01_waveforms.ipynb" class="btn btn-primary" target="_blank" rel="noopener">
+        <span data-lang="zh">Colab 在线运行</span>
+        <span data-lang="en">Open in Colab</span>
+      </a>
+      <a href="https://github.com/Zebedee2021/pyspt-v2" class="btn btn-outline" target="_blank" rel="noopener">GitHub</a>
       <button class="btn btn-install" onclick="copyInstall(this)">
         <span>pip install pyspt</span>
         <span class="copy-hint" data-lang="zh">点击复制</span>
         <span class="copy-hint" data-lang="en">click to copy</span>
       </button>
-      <a href="https://github.com/Zebedee2021/pyspt-v2" class="btn btn-primary" target="_blank" rel="noopener">GitHub</a>
-      <a href="#quickstart" class="btn btn-outline">
-        <span data-lang="zh">快速上手</span>
-        <span data-lang="en">Quick Start</span>
-      </a>
     </div>
   </div>
 </section>
@@ -115,6 +115,14 @@
         <p><span data-lang="zh">仅依赖 NumPy、SciPy、Matplotlib 三个核心科学计算库。</span><span data-lang="en">Only depends on NumPy, SciPy, and Matplotlib -- three core scientific libraries.</span></p>
       </div>
 
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3l14 9-14 9V3z"/></svg>
+        </div>
+        <h3><span data-lang="zh">Colab 在线运行</span><span data-lang="en">Run on Colab</span></h3>
+        <p><span data-lang="zh">所有教程支持一键 Colab 打开，配合 Gemini 辅助调试，修改后直接保存回 GitHub。</span><span data-lang="en">All tutorials open in Colab with one click. Use Gemini to debug and save changes back to GitHub.</span></p>
+      </div>
+
     </div>
   </div>
 </section>
@@ -130,32 +138,40 @@
     </div>
     <div class="quickstart-grid">
 
-      <!-- Install -->
+      <!-- Online + Local Install -->
       <div>
         <h3 style="font-size:1.1rem; margin-bottom:16px;">
-          <span data-lang="zh">安装</span><span data-lang="en">Installation</span>
+          <span data-lang="zh">在线使用（推荐教学）</span><span data-lang="en">Online (Recommended for Teaching)</span>
         </h3>
+        <p style="font-size:0.9rem; color:var(--c-text-secondary); margin-bottom:12px;">
+          <span data-lang="zh">点击 Colab 链接即可，notebook 首个 cell 自动安装：</span>
+          <span data-lang="en">Click a Colab link above. The first cell auto-installs:</span>
+        </p>
         <div class="code-block">
           <div class="code-block-header">
-            <span>Terminal</span>
+            <span>Python (Colab)</span>
             <button class="copy-btn" onclick="copyCode(this)">Copy</button>
           </div>
-          <pre><code><span class="cm"># Clone and install in dev mode</span>
-git clone https://github.com/Zebedee2021/pyspt-v2.git
-cd pyspt-v2
-pip install -e <span class="st">".[dev]"</span>
-
-<span class="cm"># Or minimal install</span>
-pip install -e .</code></pre>
+          <pre><code><span class="cm"># Auto-install in Colab</span>
+<span class="kw">try</span>:
+    <span class="kw">import</span> pyspt
+<span class="kw">except</span> <span class="fn">ImportError</span>:
+    !pip install -q git+https://github.com/Zebedee2021/pyspt-v2.git
+    <span class="kw">import</span> pyspt</code></pre>
         </div>
-        <div style="margin-top:16px;">
-          <h4 style="font-size:0.9rem; margin-bottom:8px; color:var(--c-text-secondary);">
-            <span data-lang="zh">可选依赖组</span><span data-lang="en">Optional Extras</span>
-          </h4>
+
+        <div style="margin-top:20px;">
+          <h3 style="font-size:1.1rem; margin-bottom:16px;">
+            <span data-lang="zh">本地开发安装</span><span data-lang="en">Local Development</span>
+          </h3>
           <div class="code-block">
-            <pre><code>pip install -e <span class="st">".[docs]"</span>       <span class="cm"># Sphinx docs</span>
-pip install -e <span class="st">".[full]"</span>       <span class="cm"># ruptures, pandas</span>
-pip install -e <span class="st">".[tutorials]"</span>  <span class="cm"># JupyterLab</span></code></pre>
+            <div class="code-block-header">
+              <span>Terminal</span>
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            </div>
+            <pre><code>git clone https://github.com/Zebedee2021/pyspt-v2.git
+cd pyspt-v2
+pip install -e <span class="st">".[dev]"</span></code></pre>
           </div>
         </div>
       </div>
@@ -213,6 +229,49 @@ plt.<span class="fn">show</span>()</code></pre>
         <span data-lang="en">No local setup needed -- run directly in Google Colab</span>
       </p>
     </div>
+
+    <!-- Workflow Diagram -->
+    <div class="workflow-diagram" style="display:flex; align-items:center; justify-content:center; gap:8px; flex-wrap:wrap; margin-bottom:36px; padding:20px 24px; border-radius:12px; background:var(--c-code-bg); border:1px solid var(--c-border);">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;background:#F9AB00;color:#000;font-weight:600;font-size:0.9rem;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3l14 9-14 9V3z"/></svg>
+          Colab
+        </span>
+        <span style="color:var(--c-text-secondary);font-size:1.2rem;">&rarr;</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;background:var(--c-accent);color:#fff;font-weight:600;font-size:0.9rem;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 18l6-6-6-6"/><path d="M8 6l-6 6 6 6"/></svg>
+          <span data-lang="zh">运行代码</span><span data-lang="en">Run Code</span>
+        </span>
+        <span style="color:var(--c-text-secondary);font-size:1.2rem;">&rarr;</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;background:#4285F4;color:#fff;font-weight:600;font-size:0.9rem;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4m0 12v4m-10-10h4m12 0h4"/></svg>
+          Gemini
+        </span>
+        <span style="color:var(--c-text-secondary);font-size:1.2rem;">&rarr;</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;background:#34A853;color:#fff;font-weight:600;font-size:0.9rem;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          <span data-lang="zh">调试修复</span><span data-lang="en">Debug</span>
+        </span>
+        <span style="color:var(--c-text-secondary);font-size:1.2rem;">&rarr;</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;background:#333;color:#fff;font-weight:600;font-size:0.9rem;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          GitHub
+        </span>
+      </div>
+    </div>
+    <p style="text-align:center; color:var(--c-text-secondary); font-size:0.85rem; margin-top:-24px; margin-bottom:32px;">
+      <span data-lang="zh">打开 Colab &rarr; 运行代码 &rarr; 遇到问题用 Gemini 辅助调试 &rarr; 修复后直接保存回 GitHub 仓库</span>
+      <span data-lang="en">Open Colab &rarr; Run code &rarr; Use Gemini to debug issues &rarr; Save fixes back to GitHub</span>
+    </p>
+
     <div class="modules-grid" style="grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));">
 
       <div class="module-card done">
@@ -598,6 +657,7 @@ plt.<span class="fn">title</span>(<span class="st">'Chirp Signal'</span>)</code>
   <div class="container">
     <ul class="footer-links">
       <li><a href="https://github.com/Zebedee2021/pyspt-v2" target="_blank" rel="noopener">GitHub</a></li>
+      <li><a href="https://colab.research.google.com/github/Zebedee2021/pyspt-v2/blob/main/tutorials/ch02_generation/01_waveforms.ipynb" target="_blank" rel="noopener">Open in Colab</a></li>
       <li><a href="https://github.com/spaitlab/pyspt" target="_blank" rel="noopener">spaitlab/pyspt (v1)</a></li>
       <li><a href="https://github.com/Zebedee2021/pyspt-v2/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a></li>
     </ul>
