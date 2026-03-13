@@ -1,0 +1,97 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyspt"
+version = "2.0.0dev0"
+description = "Python Signal Processing Toolbox - Python 信号处理工具箱"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.9"
+authors = [
+    {name = "Zhiguo Zhou", email = "zhiguozhou@bit.edu.cn"},
+]
+keywords = ["signal processing", "DSP", "MATLAB", "scipy", "教学"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Education",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+]
+dependencies = [
+    "numpy>=1.22",
+    "scipy>=1.9",
+    "matplotlib>=3.5",
+]
+
+[project.optional-dependencies]
+full = [
+    "ruptures>=1.1",
+    "pandas>=1.4",
+]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "ruff>=0.4",
+]
+docs = [
+    "sphinx>=6",
+    "sphinx-rtd-theme>=2.0",
+    "nbsphinx>=0.9",
+    "myst-parser>=2.0",
+]
+tutorials = [
+    "jupyterlab>=4",
+    "ipywidgets>=8",
+]
+
+[project.urls]
+Homepage = "https://github.com/spaitlab/pyspt"
+Documentation = "https://pyspt.readthedocs.io"
+Repository = "https://github.com/spaitlab/pyspt"
+Issues = "https://github.com/spaitlab/pyspt/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+target-version = "py39"
+line-length = 88
+src = ["src"]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "UP",  # pyupgrade
+    "B",   # flake8-bugbear
+    "NPY", # numpy-specific rules
+]
+ignore = [
+    "E501",  # line too long (handled by formatter)
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["pyspt"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-v --tb=short"
+
+[tool.coverage.run]
+source = ["pyspt"]
+
+[tool.coverage.report]
+show_missing = true
+skip_empty = true
