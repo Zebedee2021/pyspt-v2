@@ -49,6 +49,18 @@ pip install -e .
 | `full` | `pip install -e ".[full]"` | ruptures, pandas 等扩展功能 |
 | `tutorials` | `pip install -e ".[tutorials]"` | JupyterLab 交互教程 |
 
+## 在线运行 | Run on Colab
+
+无需本地安装，直接在 Google Colab 中运行教程笔记本：
+
+No local installation needed -- run tutorials directly in Google Colab:
+
+| 章节 | 笔记本 | Colab |
+|------|--------|-------|
+| Ch02 波形生成 | `01_waveforms.ipynb` | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Zebedee2021/pyspt-v2/blob/main/tutorials/ch02_generation/01_waveforms.ipynb) |
+
+> 更多章节笔记本将随模块开发持续更新。
+
 ## 快速上手 | Quick Start
 
 ```python
