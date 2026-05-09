@@ -9,6 +9,7 @@
   <a href="https://numpy.org"><img src="https://img.shields.io/badge/numpy-%E2%89%A51.22-orange.svg" alt="NumPy"></a>
   <a href="https://scipy.org"><img src="https://img.shields.io/badge/scipy-%E2%89%A51.9-orange.svg" alt="SciPy"></a>
   <a href="https://zebedee2021.github.io/pyspt-v2/"><img src="https://img.shields.io/badge/docs-GitHub%20Pages-blue.svg" alt="Docs"></a>
+  <a href="https://github.com/Zebedee2021/pyspt-v2/actions/workflows/test.yml"><img src="https://github.com/Zebedee2021/pyspt-v2/actions/workflows/test.yml/badge.svg" alt="Tests"></a>
 </p>
 
 ---
