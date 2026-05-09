@@ -89,6 +89,13 @@ FIXTURE_TOL = 1e-9
 
 DEFAULT_BACKEND = "engine"
 
+# Timing collection: how many runs per fixture to time, and how many to
+# discard up front as JIT / cache warmup. The recorded median + stddev let
+# parity tests print a "matlab vs pyspt" speed comparison without re-running
+# MATLAB on CI (where MATLAB usually isn't installed).
+N_TIMING_RUNS = 10
+N_WARMUP = 2
+
 
 # --------------------------------------------------------------------------
 # Spec types
@@ -446,6 +453,18 @@ class MatlabBackend:
     def run(self, matlab_code: str, capture: list[str]) -> dict[str, np.ndarray]:
         raise NotImplementedError
 
+    def time_only(self, matlab_code: str) -> float | None:
+        """Run ``matlab_code`` and return its execution time in seconds,
+        excluding any Python↔MATLAB IPC overhead.
+
+        Implementations should use MATLAB's own ``tic``/``toc`` (or the
+        equivalent in their backend) so the recorded time reflects MATLAB's
+        cost in isolation, not the round-trip from Python. Return ``None``
+        to signal that timing is unsupported in this backend (e.g. the batch
+        backend, where each call is dominated by MATLAB's ~10 s startup).
+        """
+        return None
+
     def close(self) -> None:
         pass
 
@@ -475,6 +494,30 @@ class EngineBackend(MatlabBackend):
             val = self.eng.workspace[name]
             out[name] = np.asarray(val).squeeze()
         return out
+
+    def time_only(self, matlab_code: str) -> float:
+        """Time MATLAB execution using its own ``tic``/``toc``.
+
+        Wraps the snippet so the elapsed time is measured *inside* MATLAB —
+        Python only sees one ``evalc`` round-trip but reads back the
+        MATLAB-clocked elapsed value. This avoids contaminating fast
+        functions (~50 µs) with the millisecond-scale Python↔MATLAB IPC
+        overhead.
+
+        Variable naming gotcha: MATLAB rejects identifiers that start with
+        an underscore (the parser only accepts ``letter | letter digit_``).
+        We use the ``pyspt_t_*`` prefix instead of the Python-idiomatic
+        ``_t_*`` so the wrapped script parses cleanly under MATLAB's rules.
+        The prefix also makes accidental name collisions with user code
+        practically impossible.
+        """
+        timing_code = (
+            "pyspt_t_start_ = tic;\n"
+            f"{matlab_code}\n"
+            "pyspt_t_elapsed_ = toc(pyspt_t_start_);\n"
+        )
+        self.eng.evalc(timing_code, nargout=0)
+        return float(self.eng.workspace["pyspt_t_elapsed_"])
 
     def close(self) -> None:
         self.eng.quit()
@@ -592,6 +635,11 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         "--force", action="store_true",
         help="Regenerate fixtures even if they already exist.",
     )
+    p.add_argument(
+        "--no-timing", action="store_true",
+        help="Skip per-case MATLAB timing collection (faster regen, but "
+             "fixtures won't carry matlab_time_median_us in their _meta).",
+    )
     return p.parse_args(argv)
 
 
@@ -626,6 +674,23 @@ def main(argv: list[str] | None = None) -> int:
                     n_failed += 1
                     continue
 
+                # Optional MATLAB timing collection. The first ``backend.run``
+                # call above doubles as the first warmup pass; we then run the
+                # snippet N_WARMUP + N_TIMING_RUNS more times via tic/toc and
+                # keep only the last N_TIMING_RUNS samples. Median + stddev go
+                # into _meta so parity tests (and CI) can compare against
+                # pyspt's runtime without re-spawning MATLAB.
+                timing_samples: list[float] = []
+                if not args.no_timing:
+                    for i in range(N_WARMUP + N_TIMING_RUNS):
+                        elapsed = backend.time_only(case.matlab_code)
+                        if elapsed is None:
+                            # Backend doesn't support per-call timing — drop it.
+                            timing_samples = []
+                            break
+                        if i >= N_WARMUP:
+                            timing_samples.append(elapsed)
+
                 meta = {
                     "matlab_function": spec.func,
                     "module": spec.module,
@@ -634,9 +699,18 @@ def main(argv: list[str] | None = None) -> int:
                     "tolerance": FIXTURE_TOL,
                     "captured": list(data.keys()),
                 }
+                if timing_samples:
+                    meta["matlab_time_median_us"] = float(np.median(timing_samples)) * 1e6
+                    meta["matlab_time_stddev_us"] = float(np.std(timing_samples)) * 1e6
+                    meta["matlab_time_n_runs"] = len(timing_samples)
+
                 write_fixture(path, data, meta)
                 rel = path.relative_to(REPO_ROOT)
-                print(f"  ok    {case.name:20s}  -> {rel}")
+                if timing_samples:
+                    t_med = meta["matlab_time_median_us"]
+                    print(f"  ok    {case.name:20s}  -> {rel}  [matlab: {t_med:7.1f} us]")
+                else:
+                    print(f"  ok    {case.name:20s}  -> {rel}")
                 n_written += 1
 
         print(
