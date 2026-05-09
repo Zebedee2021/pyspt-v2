@@ -381,6 +381,15 @@ FIXTURE_SPEC: list[FunctionSpec] = [
                 ),
                 capture=["t", "d", "y"],
             ),
+            FixtureCase(
+                name="rectpuls_train_many",
+                matlab_code=(
+                    "t = -6 : 0.001 : 6;\n"
+                    "d = linspace(-5, 5, 100);\n"
+                    "y = pulstran(t, d, 'rectpuls');\n"
+                ),
+                capture=["t", "d", "y"],
+            ),
         ],
     ),
 

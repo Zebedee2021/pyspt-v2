@@ -157,6 +157,10 @@ def _pulstran_gauspuls_train_default(data):
     from pyspt.waveforms import pulstran
     return pulstran(data["t"], data["d"], "gauspuls")
 
+def _pulstran_rectpuls_train_many(data):
+    from pyspt.waveforms import pulstran
+    return pulstran(data["t"], data["d"], "rectpuls")
+
 def _sinc_default_grid(data):
     from pyspt.waveforms import sinc
     return sinc(data["x"])
@@ -188,6 +192,7 @@ CASE_RUNNERS: dict[str, tuple[Callable[[dict[str, np.ndarray]], np.ndarray], str
     "tripuls__width05_skew_left":   (_tripuls_width05_skew_left,   "y"),
     "pulstran__rectpuls_train_default":  (_pulstran_rectpuls_train_default,  "y"),
     "pulstran__gauspuls_train_default":  (_pulstran_gauspuls_train_default,  "y"),
+    "pulstran__rectpuls_train_many":     (_pulstran_rectpuls_train_many,     "y"),
     "sinc__default_grid":           (_sinc_default_grid,           "y"),
     "sinc__exact_zeros_and_origin": (_sinc_exact_zeros_and_origin, "y"),
 }
