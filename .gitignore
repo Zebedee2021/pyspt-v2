@@ -46,3 +46,7 @@ desktop.ini
 
 # mypy
 .mypy_cache/
+
+# Co-work scratch (never commit session notes)
+.cowork/*.session.md
+.cowork/*.tmp
