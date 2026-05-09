@@ -24,6 +24,12 @@ filtering
     Digital and analog filters (数字和模拟滤波器)
 spectral
     Spectral analysis (频谱分析)
+tfa
+    Time-frequency analysis (时频分析) — Phase 7
+vibration
+    Vibration analysis (振动分析) — Phase 8 (EICPS-aligned)
+modulation
+    Modulation and quantization (调制和量化) — Phase 2
 io
     Data I/O utilities (数据读写)
 plotting
