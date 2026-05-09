@@ -326,8 +326,23 @@ def pulstran(
     else:
         raise TypeError("func must be a string name or a callable.")
 
-    y = np.zeros_like(t)
-    for delay, amp in zip(delays, amps):
-        y = y + amp * pulse_func(t - delay)
+    # Vectorise the delay-dimension via broadcasting:
+    #   T[i, j] = t[j] - delays[i]                   shape (N_delays, N_t)
+    #   pulse_func(T) evaluates all delays at once    shape (N_delays, N_t)
+    #   amplitude-weighted sum along delays           shape (N_t,)
+    #
+    # This replaces a Python-level loop over delays with one NumPy
+    # broadcast operation, which is the dominant performance gain
+    # over the previous implementation. Requires pulse_func to
+    # broadcast over multidimensional input — every NumPy-based pulse
+    # function in this module does so naturally.
+    #
+    # Memory note: the (N_delays × N_t) intermediate is ~80 KB for the
+    # 10-delay × 1k-sample test grids, but grows to ~8 GB for an
+    # ECG-scale 1k-pulse × 1M-sample workload. If used with such large
+    # inputs, chunking by delays is straightforward to add.
+    if delays.size == 0:
+        return np.zeros_like(t)
 
-    return y
+    T = t[None, :] - delays[:, None]
+    return (amps[:, None] * pulse_func(T)).sum(axis=0)
