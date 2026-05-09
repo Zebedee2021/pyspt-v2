@@ -76,15 +76,16 @@ def gmonopuls(
     t: np.ndarray | float,
     fc: float = 1000.0,
 ) -> np.ndarray:
-    """Generate a Gaussian monopulse.
+    """Generate a unit-amplitude Gaussian monopulse.
 
-    生成高斯单脉冲。
+    生成单位幅度的高斯单脉冲。
 
-    A Gaussian monopulse is the first derivative of a Gaussian pulse::
+    Implements the closed-form MATLAB convention::
 
-        y(t) = -2 * a * t * exp(-a * t^2)
+        y(t) = sqrt(e) * 2*pi*fc * t * exp(-2 * (pi*fc*t)^2)
 
-    where ``a = (2*pi*fc)^2 / (2*log(10^(3/20)))``.
+    The peak amplitude is exactly +1 at ``t = +1/(2*pi*fc)`` and -1 at
+    ``t = -1/(2*pi*fc)``.
 
     Parameters
     ----------
@@ -98,33 +99,30 @@ def gmonopuls(
     Returns
     -------
     y : ndarray
-        Gaussian monopulse signal.
+        Gaussian monopulse signal, unit-amplitude.
 
     Examples
     --------
     >>> import numpy as np
     >>> from pyspt.waveforms import gmonopuls
-    >>> t = np.linspace(-0.5, 0.5, 200)
-    >>> y = gmonopuls(t, fc=5)
+    >>> t = np.linspace(-1e-3, 1e-3, 200)
+    >>> y = gmonopuls(t, fc=1000)
+
+    Notes
+    -----
+    This is the analytic closed form used in MATLAB's Signal Processing
+    Toolbox: the Gaussian monopulse is the (suitably scaled) first
+    derivative of a Gaussian, with constants chosen so the peak is unity.
+    There is no separate normalization step — the formula is already
+    normalized.
+
+    本函数采用 MATLAB SPT 的解析形式：高斯单脉冲是高斯函数的（适当缩放后的）
+    一阶导数，常数选择使峰值恰为 ±1，无需额外归一化。
 
     .. note:: MATLAB equivalent: ``y = gmonopuls(t, fc)``
     """
     t = np.asarray(t, dtype=float)
-
-    # The cutoff reference for bandwidth is -3 dB (half-power)
-    # a = (2*pi*fc)^2 / (2*ln(10^(3/20)))
-    # Simplify: 10^(3/20) = 10^0.15
-    ref = 10 ** (3.0 / 20.0)
-    a = (2.0 * np.pi * fc) ** 2 / (2.0 * np.log(ref))
-
-    y = -2.0 * a * t * np.exp(-a * t**2)
-    # Normalize to unit peak amplitude
-    # Peak occurs at t_peak = 1/sqrt(2*a)
-    t_peak = 1.0 / np.sqrt(2.0 * a)
-    peak_val = 2.0 * a * t_peak * np.exp(-a * t_peak**2)
-    if peak_val != 0:
-        y = y / peak_val
-    return y
+    return np.sqrt(np.e) * 2.0 * np.pi * fc * t * np.exp(-2.0 * (np.pi * fc * t) ** 2)
 
 
 def rectpuls(
@@ -135,8 +133,12 @@ def rectpuls(
 
     生成非周期矩形脉冲。
 
-    Returns 1 where ``|t| < width/2``, 0.5 where ``|t| == width/2``,
-    and 0 elsewhere.
+    Returns 1 on the left-closed, right-open interval ``[-width/2, +width/2)``
+    and 0 elsewhere. This matches MATLAB's rectpuls convention exactly,
+    including the asymmetric edge handling at ``t = ±width/2``.
+
+    在左闭右开区间 ``[-width/2, +width/2)`` 上返回 1，其余返回 0；
+    严格匹配 MATLAB ``rectpuls`` 的非对称边界约定。
 
     Parameters
     ----------
@@ -150,7 +152,7 @@ def rectpuls(
     Returns
     -------
     y : ndarray
-        Rectangular pulse values (0, 0.5, or 1).
+        Rectangular pulse values (0 or 1).
 
     Examples
     --------
@@ -159,14 +161,21 @@ def rectpuls(
     >>> t = np.linspace(-2, 2, 400)
     >>> y = rectpuls(t, width=1.0)
 
+    Notes
+    -----
+    The asymmetric edge convention (left-closed, right-open) is intentional:
+    when stitching pulses at adjacent delays in :func:`pulstran`, it ensures
+    a sample at the seam between two pulses is counted exactly once rather
+    than receiving contributions from both sides.
+
+    边界采用"左闭右开"——这是有意设计：在 ``pulstran`` 拼接相邻脉冲时，
+    位于接缝处的样本恰好被计入一次，避免双重叠加。
+
     .. note:: MATLAB equivalent: ``y = rectpuls(t, w)``
     """
     t = np.asarray(t, dtype=float)
     half_w = width / 2.0
-    y = np.zeros_like(t)
-    y[np.abs(t) < half_w] = 1.0
-    y[np.abs(t) == half_w] = 0.5
-    return y
+    return ((t >= -half_w) & (t < half_w)).astype(float)
 
 
 def tripuls(

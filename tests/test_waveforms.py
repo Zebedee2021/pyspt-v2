@@ -162,11 +162,29 @@ class TestRectpuls:
         y = rectpuls(t, width=1.0)
         assert np.all(y == 0.0)
 
-    def test_boundary_half(self):
-        """At exactly |t| = width/2, value should be 0.5."""
+    def test_boundary_left_closed_right_open(self):
+        """Edge convention matches MATLAB: rectpuls is 1 on [-w/2, +w/2).
+
+        The left edge t = -w/2 is INCLUDED (returns 1); the right edge
+        t = +w/2 is EXCLUDED (returns 0). This asymmetry is intentional —
+        when ``pulstran`` stitches adjacent pulses, it ensures the sample
+        at the seam is counted exactly once instead of receiving
+        contributions from both sides.
+
+        Historical note: an earlier version returned 0.5 at both edges
+        (a "midpoint" convention), which disagreed with MATLAB and caused
+        a 0.5 amplitude error in any pulse train computation. Don't change
+        this back without also changing MATLAB.
+        """
+        # width = 1, edges at ±0.5
         t = np.array([-0.5, 0.5])
         y = rectpuls(t, width=1.0)
-        np.testing.assert_allclose(y, 0.5)
+        np.testing.assert_array_equal(y, [1.0, 0.0])
+
+        # width = 0.5, edges at ±0.25 — confirms it's not hardcoded to ±0.5
+        t = np.array([-0.25, 0.25])
+        y = rectpuls(t, width=0.5)
+        np.testing.assert_array_equal(y, [1.0, 0.0])
 
     def test_different_widths(self):
         t = np.array([0.0])
