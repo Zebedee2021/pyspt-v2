@@ -50,3 +50,7 @@ desktop.ini
 # Co-work scratch (never commit session notes)
 .cowork/*.session.md
 .cowork/*.tmp
+
+# Local-only workflow log (read by both Cowork and Claude Code,
+# but never committed - contains decision details that are local-state)
+.cowork/session-log.md
