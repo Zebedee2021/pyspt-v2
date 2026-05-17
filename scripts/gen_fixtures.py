@@ -572,7 +572,7 @@ class BatchBackend(MatlabBackend):
         try:
             subprocess.run(
                 ["matlab", "-batch", "disp('ok')"],
-                check=True, capture_output=True, text=True, timeout=60,
+                check=True, capture_output=True, text=True, timeout=180,
             )
         except (FileNotFoundError, subprocess.CalledProcessError) as e:
             raise SystemExit(
