@@ -38,6 +38,18 @@ def load_fixture(path: Path) -> tuple[dict[str, np.ndarray], dict[str, Any]]:
     meta = json.loads(str(meta_arr))
     return raw, meta
 
+def _detrend_linear(data):
+    from pyspt.preprocessing import detrend
+    return detrend(data["x"])
+
+def _detrend_constant(data):
+    from pyspt.preprocessing import detrend
+    return detrend(data["x"], type='constant')
+
+def _detrend_2d_array(data):
+    from pyspt.preprocessing import detrend
+    return detrend(data["x"])
+
 def _detrend_row_vector(data):
     from pyspt.preprocessing import detrend
     return detrend(data["x"])
@@ -46,18 +58,14 @@ def _detrend_column_vector(data):
     from pyspt.preprocessing import detrend
     return detrend(data["x"])
 
-def _detrend_constant(data):
-    from pyspt.preprocessing import detrend
-    return detrend(data["x"], type='constant')
-
 def _detrend_2d_matrix(data):
     from pyspt.preprocessing import detrend
     return detrend(data["x"])
 
 def _detrend_breakpoint(data):
     from pyspt.preprocessing import detrend
-    # MATLAB uses 1-based indexing for breakpoint: 5 means index 4 in Python (or breakpoint vector [5-1])
-    # Also detrend bp argument is a vector of breakpoint indices
+    # MATLAB uses 1-based indexing for breakpoint: 5 means index 4 in Python
+    # Also scipy detrend bp argument is a vector of breakpoint indices
     return detrend(data["x"], type='linear', bp=4)
 
 def _detrend_empty(data):
@@ -73,9 +81,11 @@ def _detrend_nan_handling(data):
     return detrend(data["x"])
 
 CASE_RUNNERS: dict[str, tuple[Callable[[dict[str, np.ndarray]], np.ndarray], str]] = {
+    "detrend__linear": (_detrend_linear, "y"),
+    "detrend__constant": (_detrend_constant, "y"),
+    "detrend__2d_array": (_detrend_2d_array, "y"),
     "detrend__row_vector": (_detrend_row_vector, "y"),
     "detrend__column_vector": (_detrend_column_vector, "y"),
-    "detrend__constant": (_detrend_constant, "y"),
     "detrend__2d_matrix": (_detrend_2d_matrix, "y"),
     "detrend__breakpoint": (_detrend_breakpoint, "y"),
     "detrend__empty": (_detrend_empty, "y"),
