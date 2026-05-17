@@ -2,6 +2,8 @@
 
 Generate MATLAB-derived "golden output" fixtures for pyspt-v2 parity tests.
 
+NOTE: This script must be run on a licensed local or CI machine with a genuine MATLAB installation (or matlab.engine).
+
 For each (function, input case) pair declared in FIXTURE_SPEC, this script:
 
   1. Calls MATLAB to execute the reference function on canonical input(s).
@@ -427,10 +429,19 @@ FIXTURE_SPEC: list[FunctionSpec] = [
         module="preprocessing",
         cases=[
             FixtureCase(
-                name="linear",
+                name="row_vector",
                 matlab_code=(
                     "rng('default');\n"
                     "x = [1, 2, 3, 4, 5] + randn(1, 5) * 0.1;\n"
+                    "y = detrend(x);\n"
+                ),
+                capture=["x", "y"],
+            ),
+            FixtureCase(
+                name="column_vector",
+                matlab_code=(
+                    "rng('default');\n"
+                    "x = ([1, 2, 3, 4, 5] + randn(1, 5) * 0.1)';\n"
                     "y = detrend(x);\n"
                 ),
                 capture=["x", "y"],
@@ -445,17 +456,51 @@ FIXTURE_SPEC: list[FunctionSpec] = [
                 capture=["x", "y"],
             ),
             FixtureCase(
-                name="2d_array",
+                name="2d_matrix",
                 matlab_code=(
                     "rng('default');\n"
-                    "x = magic(3) + [1; 2; 3] * [1, 1, 1];\n"
+                    "x = magic(4) + [1; 2; 3; 4] * [1, 1, 1, 1];\n"
+                    "y = detrend(x);\n"
+                ),
+                capture=["x", "y"],
+            ),
+            FixtureCase(
+                name="breakpoint",
+                matlab_code=(
+                    "rng('default');\n"
+                    "x = [1:10] + randn(1, 10) * 0.1;\n"
+                    "x(6:10) = x(6:10) + 5;\n"
+                    "y = detrend(x, 'linear', 5);\n"
+                ),
+                capture=["x", "y"],
+            ),
+            FixtureCase(
+                name="empty",
+                matlab_code=(
+                    "x = [];\n"
+                    "y = detrend(x);\n"
+                ),
+                capture=["x", "y"],
+            ),
+            FixtureCase(
+                name="scalar",
+                matlab_code=(
+                    "x = 42;\n"
+                    "y = detrend(x);\n"
+                ),
+                capture=["x", "y"],
+            ),
+            FixtureCase(
+                name="nan_handling",
+                matlab_code=(
+                    "x = [1, 2, NaN, 4, 5];\n"
                     "y = detrend(x);\n"
                 ),
                 capture=["x", "y"],
             ),
         ],
     ),
-    # TODO: findpeaks, snr, thd, rms, peak2peak, etc.
+        # TODO: findpeaks, snr, thd, rms, peak2peak, etc.
     # FunctionSpec(func="findpeaks", module="measurements", cases=[...]),
 
     # ----- Phase 3: transforms ------------------------------------
