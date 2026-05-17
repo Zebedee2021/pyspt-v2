@@ -34,7 +34,6 @@ from typing import Any, Callable
 import numpy as np
 import pytest
 
-
 REPO_ROOT = Path(__file__).resolve().parents[2]
 FIXTURE_DIR = REPO_ROOT / "tests" / "fixtures" / "waveforms"
 
