@@ -16,28 +16,6 @@ FIXTURE_DIR = REPO_ROOT / "tests" / "fixtures" / "preprocessing"
 N_TIMING_RUNS = 10
 N_WARMUP = 2
 
-def discover_fixtures() -> list[Any]:
-    """Return all .npz fixtures under tests/fixtures/preprocessing/, sorted."""
-    if not FIXTURE_DIR.exists():
-        return [pytest.param("NO_FIXTURES", marks=pytest.mark.skip(reason="No fixtures available yet, must be generated in MATLAB environment"))]
-    fixtures = sorted(FIXTURE_DIR.glob("*__*.npz"))
-    if not fixtures:
-        return [pytest.param("NO_FIXTURES", marks=pytest.mark.skip(reason="No fixtures available yet, must be generated in MATLAB environment"))]
-    return fixtures
-
-def _fixture_id(p: Any) -> str:
-    if isinstance(p, Path):
-        return p.stem
-    return str(p)
-
-def load_fixture(path: Path) -> tuple[dict[str, np.ndarray], dict[str, Any]]:
-    """Open a fixture and split data arrays from the JSON metadata blob."""
-    with np.load(path, allow_pickle=True) as data_obj:
-        raw = dict(data_obj)
-    meta_arr = raw.pop("_meta")
-    meta = json.loads(str(meta_arr))
-    return raw, meta
-
 def _detrend_linear(data):
     from pyspt.preprocessing import detrend
     return detrend(data["x"])
@@ -92,6 +70,34 @@ CASE_RUNNERS: dict[str, tuple[Callable[[dict[str, np.ndarray]], np.ndarray], str
     "detrend__scalar": (_detrend_scalar, "y"),
     "detrend__nan_handling": (_detrend_nan_handling, "y"),
 }
+
+
+def discover_fixtures() -> list[Any]:
+    """Yield tests for all CASE_RUNNERS, skipping if the .npz fixture doesn't exist yet."""
+    fixtures = []
+    for stem in CASE_RUNNERS.keys():
+        fixture_path = FIXTURE_DIR / f"{stem}.npz"
+        if not fixture_path.exists():
+            fixtures.append(pytest.param(fixture_path, marks=pytest.mark.skip(reason=f"Fixture {stem}.npz not generated yet")))
+        else:
+            fixtures.append(fixture_path)
+
+    if not fixtures:
+        return [pytest.param("NO_FIXTURES", marks=pytest.mark.skip(reason="No fixtures available yet, must be generated in MATLAB environment"))]
+    return fixtures
+
+def _fixture_id(p: Any) -> str:
+    if isinstance(p, Path):
+        return p.stem
+    return str(p)
+
+def load_fixture(path: Path) -> tuple[dict[str, np.ndarray], dict[str, Any]]:
+    """Open a fixture and split data arrays from the JSON metadata blob."""
+    with np.load(path, allow_pickle=True) as data_obj:
+        raw = dict(data_obj)
+    meta_arr = raw.pop("_meta")
+    meta = json.loads(str(meta_arr))
+    return raw, meta
 
 @pytest.mark.parametrize("fixture_path", discover_fixtures(), ids=_fixture_id)
 def test_parity(fixture_path: Path) -> None:
