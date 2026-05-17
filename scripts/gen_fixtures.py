@@ -68,12 +68,11 @@ import json
 import subprocess
 import sys
 import tempfile
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
 import numpy as np
-
 
 # --------------------------------------------------------------------------
 # Configuration
@@ -423,7 +422,40 @@ FIXTURE_SPEC: list[FunctionSpec] = [
     ),
 
     # ----- Phase 2: preprocessing & measurements ------------------
-    # TODO: detrend, findpeaks, snr, thd, rms, peak2peak, etc.
+    FunctionSpec(
+        func="detrend",
+        module="preprocessing",
+        cases=[
+            FixtureCase(
+                name="linear",
+                matlab_code=(
+                    "rng('default');\n"
+                    "x = [1, 2, 3, 4, 5] + randn(1, 5) * 0.1;\n"
+                    "y = detrend(x);\n"
+                ),
+                capture=["x", "y"],
+            ),
+            FixtureCase(
+                name="constant",
+                matlab_code=(
+                    "rng('default');\n"
+                    "x = [1, 2, 3, 4, 5] + randn(1, 5) * 0.1;\n"
+                    "y = detrend(x, 'constant');\n"
+                ),
+                capture=["x", "y"],
+            ),
+            FixtureCase(
+                name="2d_array",
+                matlab_code=(
+                    "rng('default');\n"
+                    "x = magic(3) + [1; 2; 3] * [1, 1, 1];\n"
+                    "y = detrend(x);\n"
+                ),
+                capture=["x", "y"],
+            ),
+        ],
+    ),
+    # TODO: findpeaks, snr, thd, rms, peak2peak, etc.
     # FunctionSpec(func="findpeaks", module="measurements", cases=[...]),
 
     # ----- Phase 3: transforms ------------------------------------
