@@ -152,7 +152,6 @@ class TestGmonopuls:
 class TestRectpuls:
     def test_unit_rectangle(self):
         t = np.linspace(-2, 2, 4001)
-        y = rectpuls(t, width=1.0)
         # Inside: |t| < 0.5 → 1
         inside = t[(np.abs(t) < 0.5) & (np.abs(t) != 0.5)]
         assert np.all(rectpuls(inside, 1.0) == 1.0)
