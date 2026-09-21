@@ -13,9 +13,16 @@ from typing import Callable
 import numpy as np
 from scipy import signal as _signal
 
+from pyspt._meta import parity_verified
+
 __all__ = ["gauspuls", "gmonopuls", "rectpuls", "pulstran", "tripuls"]
 
 
+@parity_verified(
+    reference="MATLAB R2025b Signal Processing Toolbox — gauspuls",
+    fixtures=["gauspuls__default", "gauspuls__bwr_minus20"],
+    test_path="tests/waveforms/test_waveforms_parity.py",
+)
 def gauspuls(
     t: np.ndarray | float,
     fc: float = 1000.0,
@@ -66,12 +73,25 @@ def gauspuls(
     >>> t = np.linspace(-1, 1, 200)
     >>> yi = gauspuls(t, fc=5, bw=0.5)
 
+    Parity
+    ------
+    Verified against MATLAB R2025b Signal Processing Toolbox —
+    ``gauspuls(t, fc, bw)``. Fixtures: ``tests/fixtures/waveforms/gauspuls__default.npz``,
+    ``gauspuls__bwr_minus20.npz``.
+
+    与 MATLAB R2025b ``gauspuls(t, fc, bw)`` 对齐。
+
     .. note:: MATLAB equivalent: ``yi = gauspuls(t, fc, bw)``
     """
     t = np.asarray(t, dtype=float)
     return _signal.gausspulse(t, fc=fc, bw=bw, bwr=bwr, retquad=retquad, retenv=retenv)
 
 
+@parity_verified(
+    reference="MATLAB R2025b Signal Processing Toolbox — gmonopuls",
+    fixtures=["gmonopuls__fc1k", "gmonopuls__fc2g_high_freq"],
+    test_path="tests/waveforms/test_waveforms_parity.py",
+)
 def gmonopuls(
     t: np.ndarray | float,
     fc: float = 1000.0,
@@ -108,6 +128,14 @@ def gmonopuls(
     >>> t = np.linspace(-1e-3, 1e-3, 200)
     >>> y = gmonopuls(t, fc=1000)
 
+    Parity
+    ------
+    Verified against MATLAB R2025b Signal Processing Toolbox —
+    ``gmonopuls(t, fc)``. Fixtures: ``tests/fixtures/waveforms/gmonopuls__fc1k.npz``,
+    ``gmonopuls__fc2g_high_freq.npz``.
+
+    与 MATLAB R2025b ``gmonopuls(t, fc)`` 对齐。
+
     Notes
     -----
     This is the analytic closed form used in MATLAB's Signal Processing
@@ -125,6 +153,11 @@ def gmonopuls(
     return np.sqrt(np.e) * 2.0 * np.pi * fc * t * np.exp(-2.0 * (np.pi * fc * t) ** 2)
 
 
+@parity_verified(
+    reference="MATLAB R2025b Signal Processing Toolbox — rectpuls",
+    fixtures=["rectpuls__width_default", "rectpuls__width_05_with_edges"],
+    test_path="tests/waveforms/test_waveforms_parity.py",
+)
 def rectpuls(
     t: np.ndarray | float,
     width: float = 1.0,
@@ -161,6 +194,14 @@ def rectpuls(
     >>> t = np.linspace(-2, 2, 400)
     >>> y = rectpuls(t, width=1.0)
 
+    Parity
+    ------
+    Verified against MATLAB R2025b Signal Processing Toolbox —
+    ``rectpuls(t, w)``. Fixtures: ``tests/fixtures/waveforms/rectpuls__width_default.npz``,
+    ``rectpuls__width_05_with_edges.npz``.
+
+    与 MATLAB R2025b ``rectpuls(t, w)`` 对齐。
+
     Notes
     -----
     The asymmetric edge convention (left-closed, right-open) is intentional:
@@ -178,6 +219,11 @@ def rectpuls(
     return ((t >= -half_w) & (t < half_w)).astype(float)
 
 
+@parity_verified(
+    reference="MATLAB R2025b Signal Processing Toolbox — tripuls",
+    fixtures=["tripuls__default_symmetric", "tripuls__width05_skew_left"],
+    test_path="tests/waveforms/test_waveforms_parity.py",
+)
 def tripuls(
     t: np.ndarray | float,
     width: float = 1.0,
@@ -214,6 +260,14 @@ def tripuls(
     >>> t = np.linspace(-1, 1, 400)
     >>> y = tripuls(t, width=1.0, skew=0.0)
 
+    Parity
+    ------
+    Verified against MATLAB R2025b Signal Processing Toolbox —
+    ``tripuls(t, w, s)``. Fixtures: ``tests/fixtures/waveforms/tripuls__default_symmetric.npz``,
+    ``tripuls__width05_skew_left.npz``.
+
+    与 MATLAB R2025b ``tripuls(t, w, s)`` 对齐。
+
     .. note:: MATLAB equivalent: ``y = tripuls(t, w, s)``
     """
     t = np.asarray(t, dtype=float)
@@ -243,6 +297,15 @@ def tripuls(
     return y
 
 
+@parity_verified(
+    reference="MATLAB R2025b Signal Processing Toolbox — pulstran",
+    fixtures=[
+        "pulstran__rectpuls_train_default",
+        "pulstran__rectpuls_train_many",
+        "pulstran__gauspuls_train_default",
+    ],
+    test_path="tests/waveforms/test_waveforms_parity.py",
+)
 def pulstran(
     t: np.ndarray | float,
     d: np.ndarray | list | float,
@@ -286,6 +349,17 @@ def pulstran(
     >>> t = np.linspace(0, 1, 1000)
     >>> d = np.array([0.1, 0.3, 0.7])
     >>> y = pulstran(t, d, func='rectpuls')
+
+    Parity
+    ------
+    Verified against MATLAB R2025b Signal Processing Toolbox —
+    ``pulstran(t, d, func)`` for the ``rectpuls`` and ``gauspuls``
+    prototype pulses. Fixtures:
+    ``tests/fixtures/waveforms/pulstran__rectpuls_train_default.npz``,
+    ``pulstran__rectpuls_train_many.npz``,
+    ``pulstran__gauspuls_train_default.npz``.
+
+    与 MATLAB R2025b ``pulstran(t, d, func)`` 对齐（rectpuls / gauspuls 原型）。
 
     .. note:: MATLAB equivalent: ``y = pulstran(t, d, func)``
     """

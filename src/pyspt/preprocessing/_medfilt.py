@@ -12,9 +12,16 @@ import numpy as np
 from scipy import ndimage as _ndimage
 from scipy import signal as _signal
 
+from pyspt._meta import parity_verified
+
 __all__ = ["medfilt1"]
 
 
+@parity_verified(
+    reference="MATLAB R2025b Signal Processing Toolbox — medfilt1",
+    fixtures=["medfilt1__default", "medfilt1__spike_removal", "medfilt1__window5"],
+    test_path="tests/preprocessing/test_preprocessing_parity.py",
+)
 def medfilt1(
     x: np.ndarray,
     n: int = 3,
@@ -57,6 +64,15 @@ def medfilt1(
     >>> x = np.sin(2 * np.pi * 5 * t)
     >>> x[50] += 5.0              # single spike
     >>> y = medfilt1(x, 5)        # spike is removed, sine is preserved
+
+    Parity
+    ------
+    Verified against MATLAB R2025b Signal Processing Toolbox —
+    ``medfilt1(x, n)`` (odd ``n``). Fixtures:
+    ``tests/fixtures/preprocessing/medfilt1__default.npz``,
+    ``medfilt1__spike_removal.npz``, ``medfilt1__window5.npz``.
+
+    与 MATLAB R2025b ``medfilt1(x, n)`` 对齐（仅奇数 n）。
 
     .. note:: MATLAB equivalent: ``y = medfilt1(x, n)``
        Both zero-pad the signal ends, so outputs match numerically.

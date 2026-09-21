@@ -110,4 +110,49 @@
     });
   };
 
+  // ---- Parity badges (loaded from docs/data/api.json) ----
+  // For every <span class="func-tag">fn</span>, look up *fn* in the
+  // parity registry and append a "✓ R2025b" badge if verified. Runs
+  // once after DOMContentLoaded; silently no-ops if api.json is
+  // missing (e.g. local preview before `python scripts/export_api.py`).
+  function annotateVerifiedFuncs() {
+    var url = 'data/api.json';
+    fetch(url, { cache: 'no-store' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (data) {
+        if (!data || !data.functions) return;
+        // Map "name" -> reference (short, e.g. "MATLAB R2025b").
+        var verified = {};
+        Object.keys(data.functions).forEach(function (k) {
+          var entry = data.functions[k];
+          verified[entry.name] = entry.reference;
+        });
+
+        var tags = document.querySelectorAll('.module-funcs .func-tag');
+        tags.forEach(function (tag) {
+          var fname = tag.textContent.trim();
+          var ref = verified[fname];
+          if (!ref) return;
+          // Extract the short ref label (e.g. "MATLAB R2025b").
+          var label = 'MATLAB R2025b';
+          var sup = document.createElement('sup');
+          sup.className = 'func-tag-verified';
+          sup.title = ref + ' parity verified (' + (data.functions[
+            Object.keys(data.functions).filter(function (k) {
+              return data.functions[k].name === fname;
+            })[0]
+          ].fixtures.length) + ' fixture cases)';
+          sup.textContent = '✓ ' + label;
+          tag.appendChild(sup);
+        });
+      })
+      .catch(function () { /* offline preview: skip silently */ });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', annotateVerifiedFuncs);
+  } else {
+    annotateVerifiedFuncs();
+  }
+
 })();

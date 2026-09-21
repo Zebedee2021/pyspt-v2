@@ -1,0 +1,193 @@
+{
+  "generated_at": "2026-09-21T04:29:04+00:00",
+  "pyspt_version": "2.0.0dev0",
+  "function_count": 12,
+  "functions": {
+    "pyspt.preprocessing.detrend": {
+      "reference": "MATLAB R2025b Signal Processing Toolbox — detrend",
+      "fixtures": [
+        "detrend__linear",
+        "detrend__constant",
+        "detrend__2d_array"
+      ],
+      "test_path": "tests/preprocessing/test_preprocessing_parity.py",
+      "max_abs_err": null,
+      "module": "pyspt.preprocessing",
+      "name": "detrend",
+      "fixtures_resolved": [
+        "tests/fixtures/preprocessing/detrend__linear.npz",
+        "tests/fixtures/preprocessing/detrend__constant.npz",
+        "tests/fixtures/preprocessing/detrend__2d_array.npz"
+      ]
+    },
+    "pyspt.preprocessing.medfilt1": {
+      "reference": "MATLAB R2025b Signal Processing Toolbox — medfilt1",
+      "fixtures": [
+        "medfilt1__default",
+        "medfilt1__spike_removal",
+        "medfilt1__window5"
+      ],
+      "test_path": "tests/preprocessing/test_preprocessing_parity.py",
+      "max_abs_err": null,
+      "module": "pyspt.preprocessing",
+      "name": "medfilt1",
+      "fixtures_resolved": [
+        "tests/fixtures/preprocessing/medfilt1__default.npz",
+        "tests/fixtures/preprocessing/medfilt1__spike_removal.npz",
+        "tests/fixtures/preprocessing/medfilt1__window5.npz"
+      ]
+    },
+    "pyspt.waveforms.chirp": {
+      "reference": "MATLAB R2025b Signal Processing Toolbox — chirp",
+      "fixtures": [
+        "chirp__linear",
+        "chirp__quadratic"
+      ],
+      "test_path": "tests/waveforms/test_waveforms_parity.py",
+      "max_abs_err": null,
+      "module": "pyspt.waveforms",
+      "name": "chirp",
+      "fixtures_resolved": [
+        "tests/fixtures/waveforms/chirp__linear.npz",
+        "tests/fixtures/waveforms/chirp__quadratic.npz"
+      ]
+    },
+    "pyspt.waveforms.diric": {
+      "reference": "MATLAB R2025b Signal Processing Toolbox — diric",
+      "fixtures": [
+        "diric__n4_default",
+        "diric__n7_with_limit_points"
+      ],
+      "test_path": "tests/waveforms/test_waveforms_parity.py",
+      "max_abs_err": null,
+      "module": "pyspt.waveforms",
+      "name": "diric",
+      "fixtures_resolved": [
+        "tests/fixtures/waveforms/diric__n4_default.npz",
+        "tests/fixtures/waveforms/diric__n7_with_limit_points.npz"
+      ]
+    },
+    "pyspt.waveforms.gauspuls": {
+      "reference": "MATLAB R2025b Signal Processing Toolbox — gauspuls",
+      "fixtures": [
+        "gauspuls__default",
+        "gauspuls__bwr_minus20"
+      ],
+      "test_path": "tests/waveforms/test_waveforms_parity.py",
+      "max_abs_err": null,
+      "module": "pyspt.waveforms",
+      "name": "gauspuls",
+      "fixtures_resolved": [
+        "tests/fixtures/waveforms/gauspuls__default.npz",
+        "tests/fixtures/waveforms/gauspuls__bwr_minus20.npz"
+      ]
+    },
+    "pyspt.waveforms.gmonopuls": {
+      "reference": "MATLAB R2025b Signal Processing Toolbox — gmonopuls",
+      "fixtures": [
+        "gmonopuls__fc1k",
+        "gmonopuls__fc2g_high_freq"
+      ],
+      "test_path": "tests/waveforms/test_waveforms_parity.py",
+      "max_abs_err": null,
+      "module": "pyspt.waveforms",
+      "name": "gmonopuls",
+      "fixtures_resolved": [
+        "tests/fixtures/waveforms/gmonopuls__fc1k.npz",
+        "tests/fixtures/waveforms/gmonopuls__fc2g_high_freq.npz"
+      ]
+    },
+    "pyspt.waveforms.pulstran": {
+      "reference": "MATLAB R2025b Signal Processing Toolbox — pulstran",
+      "fixtures": [
+        "pulstran__rectpuls_train_default",
+        "pulstran__rectpuls_train_many",
+        "pulstran__gauspuls_train_default"
+      ],
+      "test_path": "tests/waveforms/test_waveforms_parity.py",
+      "max_abs_err": null,
+      "module": "pyspt.waveforms",
+      "name": "pulstran",
+      "fixtures_resolved": [
+        "tests/fixtures/waveforms/pulstran__rectpuls_train_default.npz",
+        "tests/fixtures/waveforms/pulstran__rectpuls_train_many.npz",
+        "tests/fixtures/waveforms/pulstran__gauspuls_train_default.npz"
+      ]
+    },
+    "pyspt.waveforms.rectpuls": {
+      "reference": "MATLAB R2025b Signal Processing Toolbox — rectpuls",
+      "fixtures": [
+        "rectpuls__width_default",
+        "rectpuls__width_05_with_edges"
+      ],
+      "test_path": "tests/waveforms/test_waveforms_parity.py",
+      "max_abs_err": null,
+      "module": "pyspt.waveforms",
+      "name": "rectpuls",
+      "fixtures_resolved": [
+        "tests/fixtures/waveforms/rectpuls__width_default.npz",
+        "tests/fixtures/waveforms/rectpuls__width_05_with_edges.npz"
+      ]
+    },
+    "pyspt.waveforms.sawtooth": {
+      "reference": "MATLAB R2025b Signal Processing Toolbox — sawtooth",
+      "fixtures": [
+        "sawtooth__default",
+        "sawtooth__triangle_via_width"
+      ],
+      "test_path": "tests/waveforms/test_waveforms_parity.py",
+      "max_abs_err": null,
+      "module": "pyspt.waveforms",
+      "name": "sawtooth",
+      "fixtures_resolved": [
+        "tests/fixtures/waveforms/sawtooth__default.npz",
+        "tests/fixtures/waveforms/sawtooth__triangle_via_width.npz"
+      ]
+    },
+    "pyspt.waveforms.sinc": {
+      "reference": "MATLAB R2025b Signal Processing Toolbox — sinc",
+      "fixtures": [
+        "sinc__default_grid",
+        "sinc__exact_zeros_and_origin"
+      ],
+      "test_path": "tests/waveforms/test_waveforms_parity.py",
+      "max_abs_err": null,
+      "module": "pyspt.waveforms",
+      "name": "sinc",
+      "fixtures_resolved": [
+        "tests/fixtures/waveforms/sinc__default_grid.npz",
+        "tests/fixtures/waveforms/sinc__exact_zeros_and_origin.npz"
+      ]
+    },
+    "pyspt.waveforms.square": {
+      "reference": "MATLAB R2025b Signal Processing Toolbox — square",
+      "fixtures": [
+        "square__default",
+        "square__duty25"
+      ],
+      "test_path": "tests/waveforms/test_waveforms_parity.py",
+      "max_abs_err": null,
+      "module": "pyspt.waveforms",
+      "name": "square",
+      "fixtures_resolved": [
+        "tests/fixtures/waveforms/square__default.npz",
+        "tests/fixtures/waveforms/square__duty25.npz"
+      ]
+    },
+    "pyspt.waveforms.tripuls": {
+      "reference": "MATLAB R2025b Signal Processing Toolbox — tripuls",
+      "fixtures": [
+        "tripuls__default_symmetric",
+        "tripuls__width05_skew_left"
+      ],
+      "test_path": "tests/waveforms/test_waveforms_parity.py",
+      "max_abs_err": null,
+      "module": "pyspt.waveforms",
+      "name": "tripuls",
+      "fixtures_resolved": [
+        "tests/fixtures/waveforms/tripuls__default_symmetric.npz",
+        "tests/fixtures/waveforms/tripuls__width05_skew_left.npz"
+      ]
+    }
+  }
+}

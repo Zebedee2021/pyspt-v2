@@ -517,14 +517,36 @@ html[lang="en"] [data-lang="zh"] { display: none !important; }
 }
 
 .func-tag {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  padding: 2px 8px;
-  border-radius: 4px;
-  background: var(--c-code-bg);
-  color: var(--c-text-secondary);
-  border: 1px solid var(--c-border);
-}
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: var(--c-code-bg);
+    color: var(--c-text-secondary);
+    border: 1px solid var(--c-border);
+  }
+
+/* Parity-verified badge, populated by main.js from docs/data/api.json */
+  .func-tag-verified {
+    display: inline-block;
+    margin-left: 4px;
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: #047857;
+    background: #D1FAE5;
+    border: 1px solid #6EE7B7;
+    cursor: help;
+    vertical-align: super;
+    line-height: 1;
+  }
+  [data-theme="dark"] .func-tag-verified {
+    color: #6EE7B7;
+    background: rgba(16, 185, 129, 0.15);
+    border-color: #047857;
+  }
 
 /* --- Compatibility --- */
 .compat-table-wrap {
