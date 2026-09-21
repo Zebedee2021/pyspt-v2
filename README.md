@@ -36,6 +36,7 @@ No local installation needed -- run tutorials directly in Google Colab. You can 
 | 章节 | 笔记本 | Colab |
 |------|--------|-------|
 | Ch02 波形生成 | `01_waveforms.ipynb` | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Zebedee2021/pyspt-v2/blob/main/tutorials/ch02_generation/01_waveforms.ipynb) |
+| Ch02 预处理 | `02_preprocessing.ipynb` | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Zebedee2021/pyspt-v2/blob/main/tutorials/ch02_generation/02_preprocessing.ipynb) |
 
 > 更多章节笔记本将随模块开发持续更新。
 
@@ -192,7 +193,8 @@ pyspt-v2/
 ├── tests/                            # 测试用例
 ├── tutorials/                        # Jupyter 教学笔记本 (支持 Colab)
 │   ├── ch02_generation/
-│   │   └── 01_waveforms.ipynb        # 波形生成教程
+│   │   ├── 01_waveforms.ipynb        # 波形生成教程
+│   │   └── 02_preprocessing.ipynb    # detrend + medfilt1 教程
 │   ├── ch03_measurement/
 │   ├── ch04_transforms/
 │   ├── ch05_filters/
