@@ -50,10 +50,25 @@ def _detrend_2d_array(data):
     from pyspt.preprocessing import detrend
     return detrend(data["x"])
 
+def _medfilt1_default(data):
+    from pyspt.preprocessing import medfilt1
+    return medfilt1(data["x"])
+
+def _medfilt1_window5(data):
+    from pyspt.preprocessing import medfilt1
+    return medfilt1(data["x"], 5)
+
+def _medfilt1_spike_removal(data):
+    from pyspt.preprocessing import medfilt1
+    return medfilt1(data["x"], 5)
+
 CASE_RUNNERS: dict[str, tuple[Callable[[dict[str, np.ndarray]], np.ndarray], str]] = {
     "detrend__linear": (_detrend_linear, "y"),
     "detrend__constant": (_detrend_constant, "y"),
     "detrend__2d_array": (_detrend_2d_array, "y"),
+    "medfilt1__default": (_medfilt1_default, "y"),
+    "medfilt1__window5": (_medfilt1_window5, "y"),
+    "medfilt1__spike_removal": (_medfilt1_spike_removal, "y"),
 }
 
 @pytest.mark.parametrize("fixture_path", discover_fixtures(), ids=_fixture_id)
@@ -119,3 +134,43 @@ def test_preprocessing_dummy():
     from pyspt.preprocessing import detrend
     x = np.array([1, 2, 3, 4, 5])
     assert detrend(x).shape == (5,)
+
+
+# ---- medfilt1 unit tests (independent of MATLAB fixtures) ----
+
+def test_medfilt1_removes_spike():
+    from pyspt.preprocessing import medfilt1
+    x = np.zeros(21)
+    x[10] = 100.0  # single spike
+    y = medfilt1(x, 5)
+    assert np.all(y == 0.0), "median filter should remove an isolated spike"
+
+
+def test_medfilt1_preserves_step_edge():
+    from pyspt.preprocessing import medfilt1
+    x = np.concatenate([np.zeros(20), 5.0 * np.ones(20)])
+    y = medfilt1(x, 3)
+    # The step is preserved; only the boundary samples see zero padding.
+    assert np.all(y[:19] == 0.0)
+    assert np.all(y[21:] == 5.0)
+
+
+def test_medfilt1_2d_along_first_nonsingleton_axis():
+    from pyspt.preprocessing import medfilt1
+    # Shape (6, 2): signals run down each column (axis 0, first
+    # non-singleton). Column 0 is a clean ramp; column 1 has a spike.
+    x = np.column_stack([np.arange(6.0), np.arange(6.0)])
+    x[3, 1] = 100.0
+    y = medfilt1(x, 3)
+    assert y.shape == (6, 2)
+    # Column 0: interior samples are medians of the ramp itself.
+    assert y[1:5, 0].tolist() == [1.0, 2.0, 3.0, 4.0]
+    # Column 1: the spike sample is replaced by the local median of
+    # [2, 100, 4] -> 4 (not the spike).
+    assert y[3, 1] == 4.0
+
+
+def test_medfilt1_invalid_window():
+    from pyspt.preprocessing import medfilt1
+    with pytest.raises(ValueError):
+        medfilt1(np.arange(5.0), 0)

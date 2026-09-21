@@ -7,5 +7,6 @@ detrend (and, in later phases, smoothdata, resample, ...).
 """
 
 from ._detrend import detrend
+from ._medfilt import medfilt1
 
-__all__ = ["detrend"]
+__all__ = ["detrend", "medfilt1"]

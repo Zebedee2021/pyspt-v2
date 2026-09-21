@@ -455,6 +455,49 @@ FIXTURE_SPEC: list[FunctionSpec] = [
             ),
         ],
     ),
+    FunctionSpec(
+        func="medfilt1",
+        module="preprocessing",
+        notes=(
+            "MATLAB medfilt1 zero-pads the signal ends; scipy.signal.medfilt "
+            "does the same, so parity is direct. MATLAB allows even n "
+            "(window biased left); scipy requires odd n — pyspt documents "
+            "odd n only."
+        ),
+        cases=[
+            FixtureCase(
+                name="default",
+                matlab_code=(
+                    "rng('default');\n"
+                    "t = linspace(0, 1, 100);\n"
+                    "x = sin(2*pi*5*t) + 0.1*randn(size(t));\n"
+                    "y = medfilt1(x);\n"
+                ),
+                capture=["t", "x", "y"],
+            ),
+            FixtureCase(
+                name="window5",
+                matlab_code=(
+                    "rng('default');\n"
+                    "t = linspace(0, 1, 100);\n"
+                    "x = sin(2*pi*5*t) + 0.1*randn(size(t));\n"
+                    "y = medfilt1(x, 5);\n"
+                ),
+                capture=["t", "x", "y"],
+            ),
+            FixtureCase(
+                name="spike_removal",
+                matlab_code=(
+                    "rng('default');\n"
+                    "t = linspace(0, 1, 100);\n"
+                    "x = sin(2*pi*5*t) + 0.1*randn(size(t));\n"
+                    "x(50) = x(50) + 5;  % single spike\n"
+                    "y = medfilt1(x, 5);\n"
+                ),
+                capture=["t", "x", "y"],
+            ),
+        ],
+    ),
     # TODO: findpeaks, snr, thd, rms, peak2peak, etc.
     # FunctionSpec(func="findpeaks", module="measurements", cases=[...]),
 
