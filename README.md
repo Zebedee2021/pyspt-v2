@@ -36,6 +36,7 @@ No local installation needed -- run tutorials directly in Google Colab. You can 
 | 章节 | 笔记本 | Colab |
 |------|--------|-------|
 | Ch02 波形生成 | `01_waveforms.ipynb` | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Zebedee2021/pyspt-v2/blob/main/tutorials/ch02_generation/01_waveforms.ipynb) |
+| Ch02 预处理 | `02_preprocessing.ipynb` | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Zebedee2021/pyspt-v2/blob/main/tutorials/ch02_generation/02_preprocessing.ipynb) |
 
 > 更多章节笔记本将随模块开发持续更新。
 
@@ -109,7 +110,7 @@ plt.show()
 | 子模块 | 说明 | 教程 | 状态 |
 |--------|------|------|------|
 | `pyspt.waveforms` | 波形生成 -- square, sawtooth, chirp, gauspuls 等 | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Zebedee2021/pyspt-v2/blob/main/tutorials/ch02_generation/01_waveforms.ipynb) | **已完成** |
-| `pyspt.preprocessing` | 信号预处理 -- 去趋势、归一化、重采样 | -- | 开发中 |
+| `pyspt.preprocessing` | 信号预处理 -- detrend, 归一化、重采样 | -- | **开发中** (detrend 已完成) |
 | `pyspt.measurements` | 测量与特征提取 -- 峰值检测、SNR、THD | -- | 开发中 |
 | `pyspt.transforms` | 信号变换 -- FFT、DCT、Hilbert、CZT | -- | 开发中 |
 | `pyspt.correlation` | 相关与卷积 -- xcorr, conv, aligned | -- | 开发中 |
@@ -192,7 +193,8 @@ pyspt-v2/
 ├── tests/                            # 测试用例
 ├── tutorials/                        # Jupyter 教学笔记本 (支持 Colab)
 │   ├── ch02_generation/
-│   │   └── 01_waveforms.ipynb        # 波形生成教程
+│   │   ├── 01_waveforms.ipynb        # 波形生成教程
+│   │   └── 02_preprocessing.ipynb    # detrend + medfilt1 教程
 │   ├── ch03_measurement/
 │   ├── ch04_transforms/
 │   ├── ch05_filters/
