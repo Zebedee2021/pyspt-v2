@@ -109,7 +109,7 @@ plt.show()
 | 子模块 | 说明 | 教程 | 状态 |
 |--------|------|------|------|
 | `pyspt.waveforms` | 波形生成 -- square, sawtooth, chirp, gauspuls 等 | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Zebedee2021/pyspt-v2/blob/main/tutorials/ch02_generation/01_waveforms.ipynb) | **已完成** |
-| `pyspt.preprocessing` | 信号预处理 -- 去趋势、归一化、重采样 | -- | 开发中 |
+| `pyspt.preprocessing` | 信号预处理 -- detrend, 归一化、重采样 | -- | **开发中** (detrend 已完成) |
 | `pyspt.measurements` | 测量与特征提取 -- 峰值检测、SNR、THD | -- | 开发中 |
 | `pyspt.transforms` | 信号变换 -- FFT、DCT、Hilbert、CZT | -- | 开发中 |
 | `pyspt.correlation` | 相关与卷积 -- xcorr, conv, aligned | -- | 开发中 |
