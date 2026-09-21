@@ -11,9 +11,16 @@ from __future__ import annotations
 import numpy as np
 from scipy.signal import detrend as scipy_detrend
 
+from pyspt._meta import parity_verified
+
 __all__ = ["detrend"]
 
 
+@parity_verified(
+    reference="MATLAB R2025b Signal Processing Toolbox — detrend",
+    fixtures=["detrend__linear", "detrend__constant", "detrend__2d_array"],
+    test_path="tests/preprocessing/test_preprocessing_parity.py",
+)
 def detrend(
     data: np.ndarray,
     type: str = "linear",
@@ -65,7 +72,19 @@ def detrend(
     >>> y = detrend(x)                 # remove best-fit line
     >>> y = detrend(x, type='constant')  # remove mean only
 
-    .. note:: MATLAB equivalent: ``y = detrend(x)`` / ``y = detrend(x, 'constant')``
+    Parity
+    ------
+    Verified against MATLAB R2025b Signal Processing Toolbox —
+    ``detrend(x)`` and ``detrend(x, 'constant')``. Fixtures:
+    ``tests/fixtures/preprocessing/detrend__linear.npz``,
+    ``detrend__constant.npz``, ``detrend__2d_array.npz``.
+
+    与 MATLAB R2025b ``detrend`` 对齐。
+    范围：本声明仅覆盖上表所列 fixture 案例的逐位对齐（容差见 .npz 元数据）；
+    其他参数组合、形状、数据类型与边界情形不在本声明的覆盖范围内。
+
+
+.. note:: MATLAB equivalent: ``y = detrend(x)`` / ``y = detrend(x, 'constant')``
        MATLAB also accepts a numeric ``bp`` vector for piecewise linear
        detrending, which maps directly to the ``bp`` parameter here.
 

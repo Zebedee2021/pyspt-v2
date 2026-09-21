@@ -12,9 +12,16 @@ import numpy as np
 from scipy import signal as _signal
 from scipy import special as _special
 
+from pyspt._meta import parity_verified
+
 __all__ = ["square", "sawtooth", "diric"]
 
 
+@parity_verified(
+    reference="MATLAB R2025b Signal Processing Toolbox — square",
+    fixtures=["square__default", "square__duty25"],
+    test_path="tests/waveforms/test_waveforms_parity.py",
+)
 def square(
     t: np.ndarray | float,
     duty: float = 50.0,
@@ -44,7 +51,18 @@ def square(
     >>> t = np.linspace(0, 2 * np.pi, 100)
     >>> y = square(t, duty=30)
 
-    .. note:: MATLAB equivalent: ``y = square(t, duty)``
+    Parity
+    ------
+    Verified against MATLAB R2025b Signal Processing Toolbox —
+    ``square(t, duty)``. Fixtures: ``tests/fixtures/waveforms/square__default.npz``,
+    ``square__duty25.npz``.
+
+    与 MATLAB R2025b ``square(t, duty)`` 对齐。
+    范围：本声明仅覆盖上表所列 fixture 案例的逐位对齐（容差见 .npz 元数据）；
+    其他参数组合、形状、数据类型与边界情形不在本声明的覆盖范围内。
+
+
+.. note:: MATLAB equivalent: ``y = square(t, duty)``
        MATLAB duty is also in percent (0~100).
     """
     t = np.asarray(t, dtype=float)
@@ -52,6 +70,11 @@ def square(
     return _signal.square(t, duty=duty / 100.0)
 
 
+@parity_verified(
+    reference="MATLAB R2025b Signal Processing Toolbox — sawtooth",
+    fixtures=["sawtooth__default", "sawtooth__triangle_via_width"],
+    test_path="tests/waveforms/test_waveforms_parity.py",
+)
 def sawtooth(
     t: np.ndarray | float,
     width: float = 1.0,
@@ -83,12 +106,28 @@ def sawtooth(
     >>> t = np.linspace(0, 4 * np.pi, 200)
     >>> y = sawtooth(t, width=0.5)  # triangle wave
 
-    .. note:: MATLAB equivalent: ``y = sawtooth(t, width)``
+    Parity
+    ------
+    Verified against MATLAB R2025b Signal Processing Toolbox —
+    ``sawtooth(t, width)``. Fixtures: ``tests/fixtures/waveforms/sawtooth__default.npz``,
+    ``sawtooth__triangle_via_width.npz``.
+
+    与 MATLAB R2025b ``sawtooth(t, width)`` 对齐。
+    范围：本声明仅覆盖上表所列 fixture 案例的逐位对齐（容差见 .npz 元数据）；
+    其他参数组合、形状、数据类型与边界情形不在本声明的覆盖范围内。
+
+
+.. note:: MATLAB equivalent: ``y = sawtooth(t, width)``
     """
     t = np.asarray(t, dtype=float)
     return _signal.sawtooth(t, width=width)
 
 
+@parity_verified(
+    reference="MATLAB R2025b Signal Processing Toolbox — diric",
+    fixtures=["diric__n4_default", "diric__n7_with_limit_points"],
+    test_path="tests/waveforms/test_waveforms_parity.py",
+)
 def diric(
     x: np.ndarray | float,
     n: int,
@@ -121,7 +160,18 @@ def diric(
     >>> x = np.linspace(-2 * np.pi, 2 * np.pi, 200)
     >>> y = diric(x, 7)
 
-    .. note:: MATLAB equivalent: ``y = diric(x, n)``
+    Parity
+    ------
+    Verified against MATLAB R2025b Signal Processing Toolbox —
+    ``diric(x, n)``. Fixtures: ``tests/fixtures/waveforms/diric__n4_default.npz``,
+    ``diric__n7_with_limit_points.npz``.
+
+    与 MATLAB R2025b ``diric(x, n)`` 对齐。
+    范围：本声明仅覆盖上表所列 fixture 案例的逐位对齐（容差见 .npz 元数据）；
+    其他参数组合、形状、数据类型与边界情形不在本声明的覆盖范围内。
+
+
+.. note:: MATLAB equivalent: ``y = diric(x, n)``
     """
     x = np.asarray(x, dtype=float)
     return _special.diric(x, n)

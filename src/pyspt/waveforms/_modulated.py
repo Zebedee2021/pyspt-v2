@@ -10,9 +10,16 @@ from __future__ import annotations
 import numpy as np
 from scipy import signal as _signal
 
+from pyspt._meta import parity_verified
+
 __all__ = ["chirp", "sinc"]
 
 
+@parity_verified(
+    reference="MATLAB R2025b Signal Processing Toolbox — chirp",
+    fixtures=["chirp__linear", "chirp__quadratic"],
+    test_path="tests/waveforms/test_waveforms_parity.py",
+)
 def chirp(
     t: np.ndarray | float,
     f0: float,
@@ -62,7 +69,17 @@ def chirp(
     >>> t = np.linspace(0, 1, 1000)
     >>> y = chirp(t, f0=1, t1=1, f1=100)
 
-    .. note:: MATLAB equivalent: ``y = chirp(t, f0, t1, f1, method, phi)``
+    Parity
+    ------
+    Verified against MATLAB R2025b Signal Processing Toolbox —
+    ``chirp(t, f0, t1, f1)``. See fixtures
+    ``tests/fixtures/waveforms/chirp__linear.npz`` and
+    ``chirp__quadratic.npz``; pytest parameter ``test_parity``
+    in ``tests/waveforms/test_waveforms_parity.py``.
+
+    与 MATLAB R2025b Signal Processing Toolbox 的 ``chirp`` 对齐。
+    范围：本声明仅覆盖上表所列 fixture 案例的逐位对齐（容差见 .npz 元数据）；
+    其他参数组合、形状、数据类型与边界情形不在本声明的覆盖范围内。
     """
     t = np.asarray(t, dtype=float)
     return _signal.chirp(
@@ -70,6 +87,11 @@ def chirp(
     )
 
 
+@parity_verified(
+    reference="MATLAB R2025b Signal Processing Toolbox — sinc",
+    fixtures=["sinc__default_grid", "sinc__exact_zeros_and_origin"],
+    test_path="tests/waveforms/test_waveforms_parity.py",
+)
 def sinc(
     x: np.ndarray | float,
 ) -> np.ndarray:
@@ -99,7 +121,16 @@ def sinc(
     >>> x = np.linspace(-5, 5, 200)
     >>> y = sinc(x)
 
-    .. note:: MATLAB equivalent: ``y = sinc(x)``
+    Parity
+    ------
+    Verified against MATLAB R2025b Signal Processing Toolbox —
+    ``sinc(x)``. See fixtures
+    ``tests/fixtures/waveforms/sinc__default_grid.npz`` and
+    ``sinc__exact_zeros_and_origin.npz``.
+
+    与 MATLAB R2025b 的归一化 ``sinc`` 对齐。
+    范围：本声明仅覆盖上表所列 fixture 案例的逐位对齐（容差见 .npz 元数据）；
+    其他参数组合、形状、数据类型与边界情形不在本声明的覆盖范围内。
     """
     x = np.asarray(x, dtype=float)
     return np.sinc(x)
