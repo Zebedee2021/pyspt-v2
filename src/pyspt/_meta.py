@@ -3,23 +3,28 @@
 This module exposes a small, dependency-free decorator
 :func:`parity_verified` that marks a public function as numerically
 aligned against a named reference implementation (typically
-MATLAB R2025b Signal Processing Toolbox). The metadata is
+``MATLAB R2025b Signal Processing Toolbox``). The metadata is
 introspectable via :func:`iter_parity_registry` and is consumed by:
 
 * ``scripts/export_api.py`` to emit ``docs/data/api.json`` (a
   machine-readable API catalogue for AI tools and the docs site),
-* ``pyspt/_validate.py`` (optional) to assert that any function
-  claiming parity has a matching ``.npz`` fixture on disk,
+* ``pyspt/_validate.py`` to assert that any function claiming parity
+  has a matching ``.npz`` fixture on disk and a matching
+  ``CASE_RUNNERS`` entry in the test module declared by ``test_path``,
 * future Sphinx/HTML doc generators.
 
 设计目标
 --------
-* **零运行时开销** — decorator 只在函数对象上挂一个 ``__parity__``
-  属性和一个全局注册表项，不改函数行为。
+* **零调用时开销** — decorator 不包装函数、不增加每次调用的开销；
+  调用时与未装饰的等价函数性能一致。装饰器本身在 *导入时* 注册
+  ``__parity__`` 属性和全局注册表项，因此 import 阶段会有一次性
+  元数据注册成本（每次 ``import pyspt`` 一次，与装饰的函数个数
+  成线性关系，与函数被调用次数无关）。
 * **可被 AI 摄入** — ``docs/data/api.json`` 是首要交付物，
   而不是给人看的 HTML。
 * **可被 pytest 校验** — ``fixtures`` 字段列出 fixture 路径前缀，
-  CI 可以照表检查 fixture 是否真的存在。
+  ``test_path`` 字段指向消费这些 fixture 的 pytest 模块；
+  CI 可以照表检查 fixture 是否真的存在、对应 runner 是否就位。
 """
 
 from __future__ import annotations
@@ -48,13 +53,19 @@ class ParityInfo:
     fixtures
         Fixture identifiers (without file extension) under
         ``tests/fixtures/<module>/``. Each entry MUST correspond to
-        a real ``.npz`` file on disk; this is checked at export time.
+        a real ``.npz`` file on disk AND a key in the
+        ``CASE_RUNNERS`` dict of ``test_path``; both invariants are
+        checked by :func:`pyspt._validate.validate_registry`.
     test_path
         Posix-style path to the pytest module that consumes the
         fixtures, e.g. ``"tests/waveforms/test_waveforms_parity.py"``.
+        The module MUST expose a top-level ``CASE_RUNNERS`` dict.
     max_abs_err
         Largest absolute deviation observed during the most recent
-        parity run. ``None`` means "not measured".
+        parity run. ``None`` means "not measured". Note: this is
+        the *measured* deviation across the declared fixture cases
+        only — it is not a statement that all parameters, shapes,
+        and edge conditions have been exercised.
     """
 
     reference: str
@@ -89,9 +100,13 @@ def parity_verified(
         Free-form description of the reference implementation.
     fixtures
         List of fixture basenames (without ``.npz``) under
-        ``tests/fixtures/<module>/``.
+        ``tests/fixtures/<module>/``. Required for the claim to pass
+        :func:`pyspt._validate.validate_registry`; passing ``None``
+        or an empty list is permitted only by code paths that do
+        not require registry consistency (e.g. experimental markers).
     test_path
         Path to the test module that exercises these fixtures.
+        The module must define a top-level ``CASE_RUNNERS`` dict.
     max_abs_err
         Maximum absolute deviation observed against the reference;
         pass ``None`` if unmeasured.
@@ -139,6 +154,11 @@ def iter_parity_registry() -> list[tuple[str, ParityInfo]]:
 
     The order is stable across runs because insertion order is preserved
     (Python ≥ 3.7 dict semantics).
+
+    Note: only functions that have actually been *imported* appear in
+    the registry, because the decorator registers on import. Callers
+    that need a fully-populated registry should walk the package
+    first — see :func:`pyspt._validate.collect_registry`.
     """
     return list(_REGISTRY.items())
 

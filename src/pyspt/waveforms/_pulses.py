@@ -80,8 +80,11 @@ def gauspuls(
     ``gauspuls__bwr_minus20.npz``.
 
     与 MATLAB R2025b ``gauspuls(t, fc, bw)`` 对齐。
+    范围：本声明仅覆盖上表所列 fixture 案例的逐位对齐（容差见 .npz 元数据）；
+    其他参数组合、形状、数据类型与边界情形不在本声明的覆盖范围内。
 
-    .. note:: MATLAB equivalent: ``yi = gauspuls(t, fc, bw)``
+
+.. note:: MATLAB equivalent: ``yi = gauspuls(t, fc, bw)``
     """
     t = np.asarray(t, dtype=float)
     return _signal.gausspulse(t, fc=fc, bw=bw, bwr=bwr, retquad=retquad, retenv=retenv)
@@ -135,6 +138,8 @@ def gmonopuls(
     ``gmonopuls__fc2g_high_freq.npz``.
 
     与 MATLAB R2025b ``gmonopuls(t, fc)`` 对齐。
+    范围：本声明仅覆盖上表所列 fixture 案例的逐位对齐（容差见 .npz 元数据）；
+    其他参数组合、形状、数据类型与边界情形不在本声明的覆盖范围内。
 
     Notes
     -----
@@ -147,7 +152,9 @@ def gmonopuls(
     本函数采用 MATLAB SPT 的解析形式：高斯单脉冲是高斯函数的（适当缩放后的）
     一阶导数，常数选择使峰值恰为 ±1，无需额外归一化。
 
-    .. note:: MATLAB equivalent: ``y = gmonopuls(t, fc)``
+
+
+.. note:: MATLAB equivalent: ``y = gmonopuls(t, fc)``
     """
     t = np.asarray(t, dtype=float)
     return np.sqrt(np.e) * 2.0 * np.pi * fc * t * np.exp(-2.0 * (np.pi * fc * t) ** 2)
@@ -201,6 +208,8 @@ def rectpuls(
     ``rectpuls__width_05_with_edges.npz``.
 
     与 MATLAB R2025b ``rectpuls(t, w)`` 对齐。
+    范围：本声明仅覆盖上表所列 fixture 案例的逐位对齐（容差见 .npz 元数据）；
+    其他参数组合、形状、数据类型与边界情形不在本声明的覆盖范围内。
 
     Notes
     -----
@@ -212,7 +221,9 @@ def rectpuls(
     边界采用"左闭右开"——这是有意设计：在 ``pulstran`` 拼接相邻脉冲时，
     位于接缝处的样本恰好被计入一次，避免双重叠加。
 
-    .. note:: MATLAB equivalent: ``y = rectpuls(t, w)``
+
+
+.. note:: MATLAB equivalent: ``y = rectpuls(t, w)``
     """
     t = np.asarray(t, dtype=float)
     half_w = width / 2.0
@@ -267,8 +278,11 @@ def tripuls(
     ``tripuls__width05_skew_left.npz``.
 
     与 MATLAB R2025b ``tripuls(t, w, s)`` 对齐。
+    范围：本声明仅覆盖上表所列 fixture 案例的逐位对齐（容差见 .npz 元数据）；
+    其他参数组合、形状、数据类型与边界情形不在本声明的覆盖范围内。
 
-    .. note:: MATLAB equivalent: ``y = tripuls(t, w, s)``
+
+.. note:: MATLAB equivalent: ``y = tripuls(t, w, s)``
     """
     t = np.asarray(t, dtype=float)
     y = np.zeros_like(t)
@@ -360,8 +374,11 @@ def pulstran(
     ``pulstran__gauspuls_train_default.npz``.
 
     与 MATLAB R2025b ``pulstran(t, d, func)`` 对齐（rectpuls / gauspuls 原型）。
+    范围：本声明仅覆盖上表所列 fixture 案例的逐位对齐（容差见 .npz 元数据）；
+    其他参数组合、形状、数据类型与边界情形不在本声明的覆盖范围内。
 
-    .. note:: MATLAB equivalent: ``y = pulstran(t, d, func)``
+
+.. note:: MATLAB equivalent: ``y = pulstran(t, d, func)``
     """
     t = np.asarray(t, dtype=float)
     d = np.atleast_2d(np.asarray(d, dtype=float))

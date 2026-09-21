@@ -80,8 +80,11 @@ def detrend(
     ``detrend__constant.npz``, ``detrend__2d_array.npz``.
 
     与 MATLAB R2025b ``detrend`` 对齐。
+    范围：本声明仅覆盖上表所列 fixture 案例的逐位对齐（容差见 .npz 元数据）；
+    其他参数组合、形状、数据类型与边界情形不在本声明的覆盖范围内。
 
-    .. note:: MATLAB equivalent: ``y = detrend(x)`` / ``y = detrend(x, 'constant')``
+
+.. note:: MATLAB equivalent: ``y = detrend(x)`` / ``y = detrend(x, 'constant')``
        MATLAB also accepts a numeric ``bp`` vector for piecewise linear
        detrending, which maps directly to the ``bp`` parameter here.
 

@@ -1,5 +1,6 @@
 name: Tests
 
+
 on:
   push:
     branches: [main]
@@ -31,5 +32,18 @@ jobs:
           python -m pip install --upgrade pip
           pip install -e ".[dev]"
 
+      - name: Lint with ruff
+        # Lint first — a syntax or style error in src/tests/scripts
+        # fails fast before we burn minutes on pytest.
+        run: ruff check src/ tests/ scripts/
+
       - name: Run pytest (unit tests + MATLAB parity)
         run: pytest --cov=pyspt --cov-report=term-missing
+
+      - name: Check API export is up to date
+        # docs/data/api.json must reflect the live @parity_verified
+        # registry. Run AFTER pytest so a fixture mismatch also fails
+        # the parity test (defence in depth). --check never writes
+        # files; if it exits non-zero here, regenerate locally with
+        # `python scripts/export_api.py` and commit.
+        run: python scripts/export_api.py --check

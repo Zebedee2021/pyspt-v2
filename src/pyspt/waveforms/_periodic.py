@@ -58,8 +58,11 @@ def square(
     ``square__duty25.npz``.
 
     与 MATLAB R2025b ``square(t, duty)`` 对齐。
+    范围：本声明仅覆盖上表所列 fixture 案例的逐位对齐（容差见 .npz 元数据）；
+    其他参数组合、形状、数据类型与边界情形不在本声明的覆盖范围内。
 
-    .. note:: MATLAB equivalent: ``y = square(t, duty)``
+
+.. note:: MATLAB equivalent: ``y = square(t, duty)``
        MATLAB duty is also in percent (0~100).
     """
     t = np.asarray(t, dtype=float)
@@ -110,8 +113,11 @@ def sawtooth(
     ``sawtooth__triangle_via_width.npz``.
 
     与 MATLAB R2025b ``sawtooth(t, width)`` 对齐。
+    范围：本声明仅覆盖上表所列 fixture 案例的逐位对齐（容差见 .npz 元数据）；
+    其他参数组合、形状、数据类型与边界情形不在本声明的覆盖范围内。
 
-    .. note:: MATLAB equivalent: ``y = sawtooth(t, width)``
+
+.. note:: MATLAB equivalent: ``y = sawtooth(t, width)``
     """
     t = np.asarray(t, dtype=float)
     return _signal.sawtooth(t, width=width)
@@ -161,8 +167,11 @@ def diric(
     ``diric__n7_with_limit_points.npz``.
 
     与 MATLAB R2025b ``diric(x, n)`` 对齐。
+    范围：本声明仅覆盖上表所列 fixture 案例的逐位对齐（容差见 .npz 元数据）；
+    其他参数组合、形状、数据类型与边界情形不在本声明的覆盖范围内。
 
-    .. note:: MATLAB equivalent: ``y = diric(x, n)``
+
+.. note:: MATLAB equivalent: ``y = diric(x, n)``
     """
     x = np.asarray(x, dtype=float)
     return _special.diric(x, n)

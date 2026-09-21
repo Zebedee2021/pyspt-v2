@@ -211,9 +211,30 @@ def test_waveform_matches_matlab(fixture_path):
     stem = fixture_path.stem
 
     if stem not in CASE_RUNNERS:
+        # Decide whether this missing runner is a *claimed* failure
+        # (a parity-verified function references this fixture but no
+        # Python side runs it) or a benign gap (a fixture left over
+        # from an experimental MATLAB capture). The parity registry
+        # is the source of truth for "claimed": if any function lists
+        # this fixture's stem under ``fixtures``, the runner MUST
+        # exist or the registry is lying.
+        from pyspt._meta import iter_parity_registry
+        claimed_by = [
+            qualname
+            for qualname, info in iter_parity_registry()
+            if stem in info.fixtures
+        ]
+        if claimed_by:
+            pytest.fail(
+                f"Fixture {stem!r} is declared by {claimed_by} via "
+                f"@parity_verified, but no runner exists in "
+                f"CASE_RUNNERS of {Path(__file__).name}. "
+                f"This would silently skip and the parity claim is wrong."
+            )
         pytest.skip(
             f"No Python runner registered for fixture {stem!r}. "
-            f"Add an entry to CASE_RUNNERS in {Path(__file__).name}."
+            f"Add an entry to CASE_RUNNERS in {Path(__file__).name} "
+            f"(or remove the orphaned fixture)."
         )
 
     runner, output_key = CASE_RUNNERS[stem]
@@ -222,6 +243,20 @@ def test_waveform_matches_matlab(fixture_path):
     try:
         actual = np.asarray(runner(data)).squeeze()
     except ImportError as e:
+        # Same distinction: a parity-claimed fixture whose function
+        # is not importable is a registry lie; an unclaimed fixture
+        # is a benign gap.
+        from pyspt._meta import iter_parity_registry
+        claimed_by = [
+            qualname
+            for qualname, info in iter_parity_registry()
+            if stem in info.fixtures
+        ]
+        if claimed_by:
+            pytest.fail(
+                f"Fixture {stem!r} is declared by {claimed_by}, but the "
+                f"Python implementation failed to import: {e}"
+            )
         pytest.skip(
             f"pyspt does not yet expose the function needed for {stem!r}: {e}"
         )

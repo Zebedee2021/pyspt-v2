@@ -73,8 +73,11 @@ def medfilt1(
     ``medfilt1__spike_removal.npz``, ``medfilt1__window5.npz``.
 
     与 MATLAB R2025b ``medfilt1(x, n)`` 对齐（仅奇数 n）。
+    范围：本声明仅覆盖上表所列 fixture 案例的逐位对齐（容差见 .npz 元数据）；
+    其他参数组合、形状、数据类型与边界情形不在本声明的覆盖范围内。
 
-    .. note:: MATLAB equivalent: ``y = medfilt1(x, n)``
+
+.. note:: MATLAB equivalent: ``y = medfilt1(x, n)``
        Both zero-pad the signal ends, so outputs match numerically.
 
     .. warning:: MATLAB also accepts an even ``n`` (window biased toward

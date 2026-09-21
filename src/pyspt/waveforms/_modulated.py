@@ -78,6 +78,8 @@ def chirp(
     in ``tests/waveforms/test_waveforms_parity.py``.
 
     与 MATLAB R2025b Signal Processing Toolbox 的 ``chirp`` 对齐。
+    范围：本声明仅覆盖上表所列 fixture 案例的逐位对齐（容差见 .npz 元数据）；
+    其他参数组合、形状、数据类型与边界情形不在本声明的覆盖范围内。
     """
     t = np.asarray(t, dtype=float)
     return _signal.chirp(
@@ -127,6 +129,8 @@ def sinc(
     ``sinc__exact_zeros_and_origin.npz``.
 
     与 MATLAB R2025b 的归一化 ``sinc`` 对齐。
+    范围：本声明仅覆盖上表所列 fixture 案例的逐位对齐（容差见 .npz 元数据）；
+    其他参数组合、形状、数据类型与边界情形不在本声明的覆盖范围内。
     """
     x = np.asarray(x, dtype=float)
     return np.sinc(x)
